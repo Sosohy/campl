@@ -6,15 +6,57 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <Button
-        android:id="@+id/signUpPage"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
-        android:text="회원가입"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+
+    <FrameLayout
+        android:id="@+id/frame"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintEnd_toEndOf="@+id/tabLayout"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
+
+    </FrameLayout>
+
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tabLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="#ffffff"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:tabGravity="fill"
+        app:tabIndicatorColor="#ffffff"
+        app:tabIndicatorGravity="top"
+        app:tabIndicatorHeight="4dp"
+        app:tabTextColor="#b9b8b8">
+
+        <com.google.android.material.tabs.TabItem
+            android:id="@+id/home"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#eba796"
+
+            android:text="홈" />
+
+        <com.google.android.material.tabs.TabItem
+            android:id="@+id/writing"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#eba796"
+
+            android:text="글쓰기" />
+
+        <com.google.android.material.tabs.TabItem
+            android:id="@+id/myPage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#eba796"
+
+            android:text="마이페이지" />
+
+    </com.google.android.material.tabs.TabLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
