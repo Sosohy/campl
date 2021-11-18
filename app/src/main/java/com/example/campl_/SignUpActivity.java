@@ -52,12 +52,9 @@ public class SignUpActivity extends AppCompatActivity {
         signUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                HashMap<String, Object> userInfo = new HashMap<>();
-                userInfo.put("nickName", input_id.toString());
-                userInfo.put("pwd", input_pw.toString());
-                userInfo.put("userName", input_name.toString());
 
-                Call<ResponseBody> signUp = camplAPI.postSignUp(userInfo);
+                UserDTO user = new UserDTO(input_id.toString(), input_pw.toString(),input_name.toString());
+                Call<ResponseBody> signUp = camplAPI.postSignUp(user);
                 signUp.enqueue(new Callback<ResponseBody>() {
                     @Override
                     public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {

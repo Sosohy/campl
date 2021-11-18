@@ -10,7 +10,8 @@
     <FrameLayout
         android:id="@+id/frame"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/tabLayout"
         app:layout_constraintEnd_toEndOf="@+id/tabLayout"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -28,10 +29,14 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:tabGravity="fill"
+        app:tabMaxWidth="0dp"
+        app:tabMode="fixed"
         app:tabIndicatorColor="#ffffff"
         app:tabIndicatorGravity="top"
         app:tabIndicatorHeight="4dp"
-        app:tabTextColor="#b9b8b8">
+        app:tabTextColor="#b9b8b8"
+
+        >
 
         <com.google.android.material.tabs.TabItem
             android:id="@+id/home"
