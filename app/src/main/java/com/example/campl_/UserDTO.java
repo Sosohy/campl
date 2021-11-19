@@ -12,6 +12,12 @@ public class UserDTO {
         this.userName = userName;
     }
 
+    public UserDTO() {
+        this.nickName = "default";
+        this.pwd = "default";
+        this.userName = "default";
+    }
+
     public void setUserSeq(int userSeq) {
         this.userSeq = userSeq;
     }

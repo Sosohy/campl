@@ -7,75 +7,93 @@
     tools:context=".HomeFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
-        <LinearLayout
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/place"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:layout_weight="1"
+            android:text="위치"
+            android:textSize="24sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:id="@+id/place"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="위치" />
-
-            <Button
-                android:id="@+id/button2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Button" />
-
-        </LinearLayout>
+        <ImageButton
+            android:id="@+id/home_search"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="?android:attr/listChoiceIndicatorSingle"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/home_search">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical" >
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/textView2"
+                    android:id="@+id/popularText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="TextView" />
+                    android:text="지금 인기있는 플랜"
+                    android:textColor="@color/design_default_color_on_secondary"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
 
                 <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/popular_recyclerView"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
                 <TextView
-                    android:id="@+id/textView3"
+                    android:id="@+id/recommandText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="TextView" />
+                    android:text="OOO님에게 추천하고 싶은 플랜"
+                    android:textColor="@color/design_default_color_on_secondary"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
-
-                <TextView
-                    android:id="@+id/textView4"
+                    android:id="@+id/recommand_recyclerView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="TextView" />
+                    android:orientation="horizontal"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+                <TextView
+                    android:id="@+id/hotplaceText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="학교 주변 핫플"
+                    android:textColor="@color/design_default_color_on_secondary"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
 
                 <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/hotplace_recyclerView"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" >
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager">
 
                 </androidx.recyclerview.widget.RecyclerView>
             </LinearLayout>
         </ScrollView>
 
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </FrameLayout>

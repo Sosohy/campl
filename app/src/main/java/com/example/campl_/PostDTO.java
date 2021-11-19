@@ -2,6 +2,8 @@ package com.example.campl_;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.List;
+
 public class PostDTO {
     @SerializedName("seq")
     int seq;
@@ -28,6 +30,39 @@ public class PostDTO {
     String durationTimeType;
     @SerializedName("timingType")
     String timingType;
+
+
+
+    public PostDTO(int seq, String title, UserDTO user, String createdAt, boolean isBookmark, boolean isLike, int likeCnt, String[] pictureUrls, String content, String costType, String durationTimeType, String timingType) {
+        this.seq = seq;
+        this.title = title;
+        this.user = user;
+        this.createdAt = createdAt;
+        this.isBookmark = isBookmark;
+        this.isLike = isLike;
+        this.likeCnt = likeCnt;
+        this.pictureUrls = pictureUrls;
+        this.content = content;
+        this.costType = costType;
+        this.durationTimeType = durationTimeType;
+        this.timingType = timingType;
+    }
+
+    public PostDTO() {
+        this.seq = 0;
+        this.title = "default";
+        this.user = new UserDTO();
+        this.createdAt = "default";
+        this.isBookmark = false;
+        this.isLike = false;
+        this.likeCnt = 0;
+        this.pictureUrls = new String[]{"default"};
+        this.content = "default";
+        this.costType = "default";
+        this.durationTimeType = "default";
+        this.timingType = "default";
+    }
+
 
     public void setSeq(int seq) {
         this.seq = seq;
@@ -116,4 +151,14 @@ public class PostDTO {
     public String getTimingType() {
         return timingType;
     }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+
 }
