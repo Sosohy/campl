@@ -35,10 +35,10 @@ public class SearchActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), SearchResultActivity.class);
-                intent.putExtra("duration", durationData);
-                intent.putExtra("timing", timingData);
-                intent.putExtra("category", categoryData);
-                intent.putExtra("cost", costData);
+               // intent.putExtra("duration", durationData);
+               // intent.putExtra("timing", timingData);
+              //  intent.putExtra("category", categoryData);
+              //  intent.putExtra("cost", costData);
                 startActivity(intent);
                 finish();
             }

@@ -48,6 +48,15 @@ public class PostDTO {
         this.timingType = timingType;
     }
 
+    public PostDTO(String title, String[] pictureUrls, String content, String costType, String durationTimeType, String timingType) {
+        this.title = title;
+        this.pictureUrls = pictureUrls;
+        this.content = content;
+        this.costType = costType;
+        this.durationTimeType = durationTimeType;
+        this.timingType = timingType;
+    }
+
     public PostDTO() {
         this.seq = 0;
         this.title = "default";

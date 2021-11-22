@@ -6,13 +6,19 @@ public class UserDTO {
     String pwd;
     String userName;
     
-    public UserDTO(String nickName, String pwd, String userName) {
+    UserDTO(String nickName, String pwd, String userName) {
         this.nickName = nickName;
         this.pwd = pwd;
         this.userName = userName;
     }
 
-    public UserDTO() {
+    UserDTO(String nickName, String pwd) {
+        this.nickName = nickName;
+        this.pwd = pwd;
+        this.userName = "user";
+    }
+
+    UserDTO() {
         this.nickName = "default";
         this.pwd = "default";
         this.userName = "default";

@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
@@ -12,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,8 +22,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class HomeFragment extends Fragment {
 
-    public static Retrofit retrofit;
-    public static camplAPI camplAPI;
+    camplAPI camplAPI;
 
     RecyclerView popular_recycler = null;
     RecyclerView recommand_recycler = null;
@@ -35,9 +32,9 @@ public class HomeFragment extends Fragment {
     ArrayList<PostDTO> recommandPosts = new ArrayList<PostDTO>();
     ArrayList<PostDTO> hotplacePosts = new ArrayList<PostDTO>();
 
-    RecyclerCardAdapter popularAdapter = new RecyclerCardAdapter(popularPosts);
-    RecyclerCardAdapter recommandAdapter = new RecyclerCardAdapter(recommandPosts);
-    RecyclerCardAdapter hotplaceAdapter = new RecyclerCardAdapter(hotplacePosts);
+    RecyclerHomeCardAdapter popularAdapter = new RecyclerHomeCardAdapter(popularPosts);
+    RecyclerHomeCardAdapter recommandAdapter = new RecyclerHomeCardAdapter(recommandPosts);
+    RecyclerHomeCardAdapter hotplaceAdapter = new RecyclerHomeCardAdapter(hotplacePosts);
 
     ImageButton searchBtn;
 
@@ -64,8 +61,6 @@ public class HomeFragment extends Fragment {
             }
         });
 
-
-
         popular_recycler = view.findViewById(R.id.popular_recyclerView);
         recommand_recycler = view.findViewById(R.id.recommand_recyclerView);
         hotplace_recycler = view.findViewById(R.id.hotplace_recyclerView);
@@ -82,8 +77,7 @@ public class HomeFragment extends Fragment {
     }
 
     public void getHomePostData() {
-        retrofit = new Retrofit.Builder().baseUrl(camplAPI.BASE_URL).addConverterFactory(GsonConverterFactory.create()).build();
-        camplAPI = retrofit.create(camplAPI.class);
+        camplAPI = MainActivity.camplAPI;
 
         // 인기글
         camplAPI.getPopularList().enqueue(new Callback<List<PostDTO>>() {

@@ -15,8 +15,13 @@ import com.google.android.material.tabs.TabLayout;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends AppCompatActivity {
+
+    private static int user = -1;
+    public static Retrofit retrofit;
+    public static camplAPI camplAPI;
 
     Button signUpBtn;
     Fragment homeFrag, writingFrag, myPageFrag;
@@ -25,6 +30,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        retrofit = new Retrofit.Builder().baseUrl(camplAPI.BASE_URL).addConverterFactory(GsonConverterFactory.create()).build();
+        camplAPI = retrofit.create(camplAPI.class);
 
         homeFrag = new HomeFragment();
         writingFrag = new WritingFragment();
@@ -54,7 +62,13 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onTabReselected(TabLayout.Tab tab) {}
         });
+    }
 
+    public static int getUser() {
+        return user;
+    }
 
+    public static void setUser(int user) {
+        MainActivity.user = user;
     }
 }
