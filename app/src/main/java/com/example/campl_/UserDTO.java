@@ -7,18 +7,21 @@ public class UserDTO {
     String userName;
     
     UserDTO(String nickName, String pwd, String userName) {
+        this.userSeq = -1;
         this.nickName = nickName;
         this.pwd = pwd;
         this.userName = userName;
     }
 
     UserDTO(String nickName, String pwd) {
+        this.userSeq = -1;
         this.nickName = nickName;
         this.pwd = pwd;
         this.userName = "user";
     }
 
     UserDTO() {
+        this.userSeq = -1;
         this.nickName = "default";
         this.pwd = "default";
         this.userName = "default";

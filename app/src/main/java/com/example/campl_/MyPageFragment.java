@@ -75,10 +75,10 @@ public class MyPageFragment extends Fragment {
                         try {
                             if(response.isSuccessful()){
                                 Toast.makeText(getContext(), response.body().string(), Toast.LENGTH_SHORT).show();
-
-                                MainActivity.setUser(1);
-                                refresh();
                             }
+                            MainActivity.setUser(1);
+                            MainActivity.userDTO = user;
+                            refresh();
 
                         } catch (IOException e) {
                             e.printStackTrace();

@@ -3,6 +3,7 @@ package com.example.campl_;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -39,6 +40,7 @@ public class SignUpActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_sign_up);
 
         input_id = (EditText)findViewById(R.id.input_id);
@@ -62,13 +64,19 @@ public class SignUpActivity extends AppCompatActivity {
                         try {
                             if(response.isSuccessful())
                                 Toast.makeText(getApplicationContext(), response.body().string(), Toast.LENGTH_SHORT).show();
+                            else{
+                                Log.e("er", response.errorBody().toString());
+                            }
+                            finish();
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
+
                     }
 
                     @Override
                     public void onFailure(Call<ResponseBody> call, Throwable t) {
+                        t.printStackTrace();
                         Toast.makeText(getApplicationContext(), "failed", Toast.LENGTH_SHORT).show();
                     }
                 });
