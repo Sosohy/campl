@@ -11,8 +11,6 @@ public class PostDTO {
     String title;
     @SerializedName("user")
     UserDTO user;
-    @SerializedName("createdAt")
-    String createdAt;
     @SerializedName("isBookmark")
     boolean isBookmark;
     @SerializedName("isLike")
@@ -30,14 +28,13 @@ public class PostDTO {
     String durationTimeType;
     @SerializedName("timingType")
     String timingType;
+    @SerializedName("category")
+    String[] category;
 
-
-
-    public PostDTO(int seq, String title, UserDTO user, String createdAt, boolean isBookmark, boolean isLike, int likeCnt, String[] pictureUrls, String content, String costType, String durationTimeType, String timingType) {
+    public PostDTO(int seq, String title, UserDTO user, boolean isBookmark, boolean isLike, int likeCnt, String[] pictureUrls, String content, String costType, String durationTimeType, String timingType, String[] category) {
         this.seq = seq;
         this.title = title;
         this.user = user;
-        this.createdAt = createdAt;
         this.isBookmark = isBookmark;
         this.isLike = isLike;
         this.likeCnt = likeCnt;
@@ -46,30 +43,31 @@ public class PostDTO {
         this.costType = costType;
         this.durationTimeType = durationTimeType;
         this.timingType = timingType;
+        this.category = category;
     }
 
-    public PostDTO(String title, String[] pictureUrls, String content, String costType, String durationTimeType, String timingType) {
+    public PostDTO(String title, String content, String costType, String durationTimeType, String timingType, String[] category) {
         this.title = title;
-        this.pictureUrls = pictureUrls;
         this.content = content;
         this.costType = costType;
         this.durationTimeType = durationTimeType;
         this.timingType = timingType;
+        this.category = category;
     }
 
     public PostDTO() {
         this.seq = 0;
         this.title = "default";
         this.user = new UserDTO();
-        this.createdAt = "default";
         this.isBookmark = false;
         this.isLike = false;
         this.likeCnt = 0;
-        this.pictureUrls = new String[]{"default"};
+        this.pictureUrls = new String[]{"https://stickershop.line-scdn.net/sticonshop/v1/product/5b5fde61040ab12caa925428/iPhone/main.png", "https://cloudfront-ap-northeast-1.images.arcpublishing.com/chosun/2TKUKXYMQF7ASZEUJLG7L4GM4I.jpg"};
         this.content = "default";
-        this.costType = "default";
-        this.durationTimeType = "default";
-        this.timingType = "default";
+        this.costType = "UNDER1";
+        this.durationTimeType = "UNDER1";
+        this.timingType = "DISMISSAL";
+        this.category = new String[]{"default"};
     }
 
 
@@ -95,14 +93,6 @@ public class PostDTO {
 
     public UserDTO getUser() {
         return user;
-    }
-
-    public void setCreatedAt(String createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public String getCreatedAt() {
-        return createdAt;
     }
 
     public void setBookmark(boolean bookmark) {
@@ -167,6 +157,14 @@ public class PostDTO {
 
     public String getContent() {
         return content;
+    }
+
+    public String[] getCategory() {
+        return category;
+    }
+
+    public void setCategory(String[] category) {
+        this.category = category;
     }
 
 

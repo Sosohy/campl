@@ -25,6 +25,9 @@ public class MainActivity extends AppCompatActivity {
     public static Retrofit retrofit;
     public static camplAPI camplAPI;
 
+    TabLayout tabs;
+    Fragment selected;
+
 
     Button signUpBtn;
     Fragment homeFrag, writingFrag, myPageFrag;
@@ -38,34 +41,61 @@ public class MainActivity extends AppCompatActivity {
         retrofit = new Retrofit.Builder().baseUrl(camplAPI.BASE_URL).addConverterFactory(GsonConverterFactory.create()).build();
         camplAPI = retrofit.create(camplAPI.class);
 
+        tabs = (TabLayout)findViewById(R.id.tabLayout);
         homeFrag = new HomeFragment();
         writingFrag = new WritingFragment();
         myPageFrag = new MyPageFragment();
         getSupportFragmentManager().beginTransaction().add(R.id.frame, homeFrag).commit();
 
-        TabLayout tabs = (TabLayout)findViewById(R.id.tabLayout);
+        tabs.getTabAt(0).setIcon(R.drawable.home);
         tabs.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 int position = tab.getPosition();
 
-                Fragment selected = null;
+                setDefault();
+                selected = null;
                 if(position == 0){
                     selected = homeFrag;
+                    tabs.getTabAt(0).setIcon(R.drawable.home);
                 }else if (position == 1){
-                    selected = writingFrag;
+                    //selected = writingFrag;
+                    //Intent intent = new Intent(getApplicationContext(), WritingActivity.class);
+                   // startActivity(intent);
                 }else if (position == 2){
                     selected = myPageFrag;
+                    tabs.getTabAt(2).setIcon(R.drawable.mypage_1);
                 }
-                getSupportFragmentManager().beginTransaction().replace(R.id.frame, selected).commit();
+                if(position == 1)
+                {
+                    Intent intent = new Intent(getApplicationContext(), WritingActivity.class);
+                    startActivity(intent);
+                }else{
+                    getSupportFragmentManager().beginTransaction().replace(R.id.frame, selected).commit();
+                }
+
             }
 
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {}
 
             @Override
-            public void onTabReselected(TabLayout.Tab tab) {}
+            public void onTabReselected(TabLayout.Tab tab) {
+                if(tab.getPosition() == 1)
+                {
+                    Intent intent = new Intent(getApplicationContext(), WritingActivity.class);
+                    startActivity(intent);
+                }else{
+                    getSupportFragmentManager().beginTransaction().replace(R.id.frame, selected).commit();
+                }
+            }
         });
+    }
+
+    public void setDefault(){
+        tabs.getTabAt(0).setIcon(R.drawable.home_1);
+        tabs.getTabAt(1).setIcon(R.drawable.write);
+        tabs.getTabAt(2).setIcon(R.drawable.mypage);
     }
 
     public static int getUser() {

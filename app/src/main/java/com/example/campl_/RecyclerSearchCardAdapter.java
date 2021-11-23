@@ -41,12 +41,15 @@ public class RecyclerSearchCardAdapter extends RecyclerView.Adapter<RecyclerSear
         final PostDTO item = mData.get(position);
 
         holder.title.setText(item.getTitle());
-        holder.timing.setText(item.getTimingType());
-        holder.duration.setText(item.getDurationTimeType());
-        holder.cost.setText(item.getCostType());
+        holder.duration.setText(camplAPI.durationD[camplAPI.durationQuery.indexOf(item.getDurationTimeType())]);
+        holder.cost.setText(camplAPI.costD[camplAPI.costQuery.indexOf(item.getCostType())]);
+
+        int tdx =  camplAPI.timingQuery.indexOf(item.getTimingType());
+        holder.timing.setText(camplAPI.timingD[tdx]);
+        holder.timing.setBackgroundResource(camplAPI.homeBackGData[tdx]);
 
         String[] url = item.getPictureUrls();
-        Glide.with(holder.itemView.getContext()).load(url[0]).into(holder.img);
+        Glide.with(holder.itemView.getContext()).load(url[0]).override(holder.img.getWidth(),150).into(holder.img);
     }
     
     public int getSeq(int position) {

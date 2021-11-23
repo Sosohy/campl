@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#ffffff"
     tools:context=".MainActivity">
 
 
@@ -11,6 +12,7 @@
         android:id="@+id/frame"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:background="@color/pure"
         app:layout_constraintBottom_toTopOf="@+id/tabLayout"
         app:layout_constraintEnd_toEndOf="@+id/tabLayout"
         app:layout_constraintHorizontal_bias="0.0"
@@ -22,45 +24,41 @@
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tabLayout"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:background="#ffffff"
+        android:layout_height="70dp"
+        android:background="@color/pure"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:tabGravity="fill"
-        app:tabMaxWidth="0dp"
-        app:tabMode="fixed"
         app:tabIndicatorColor="#ffffff"
         app:tabIndicatorGravity="top"
-        app:tabIndicatorHeight="4dp"
-        app:tabTextColor="#b9b8b8"
+        app:tabIndicatorHeight="5dp"
+        app:tabMaxWidth="0dp"
+        app:tabMode="fixed"
 
-        >
+        app:tabTextColor="#ffffff">
 
         <com.google.android.material.tabs.TabItem
             android:id="@+id/home"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#eba796"
-
-            android:text="홈" />
+            android:background="@color/pure"
+            android:icon="@drawable/home_1" />
 
         <com.google.android.material.tabs.TabItem
             android:id="@+id/writing"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#eba796"
-
-            android:text="글쓰기" />
+            android:background="@color/pure"
+            android:icon="@drawable/write" />
 
         <com.google.android.material.tabs.TabItem
             android:id="@+id/myPage"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#eba796"
-
-            android:text="마이페이지" />
+            android:background="@color/pure"
+            android:icon="@drawable/mypage" />
 
     </com.google.android.material.tabs.TabLayout>
 

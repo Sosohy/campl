@@ -52,6 +52,9 @@ public class HomeFragment extends Fragment {
 
         //getHomePostData();
 
+        PostDTO p = new PostDTO();
+        popularPosts.add(p);
+        
         searchBtn = view.findViewById(R.id.home_search);
         searchBtn.setOnClickListener(new View.OnClickListener() {
             @Override

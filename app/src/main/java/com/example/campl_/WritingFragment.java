@@ -1,5 +1,6 @@
 package com.example.campl_;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -52,8 +53,11 @@ public class WritingFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        view = inflater.inflate(R.layout.fragment_writing, container, false);
-        setInitBtns();
+        Intent intent = new Intent(getContext(), WritingActivity.class);
+        startActivity(intent);
+        return inflater.inflate(R.layout.fragment_writing, container, false);
+
+      /*  setInitBtns();
 
         title = (EditText)view.findViewById(R.id.writing_plan);
         content = (EditText)view.findViewById(R.id.writing_content);
@@ -80,10 +84,11 @@ public class WritingFragment extends Fragment {
                 });
             }
         });
+        */
 
-        return view;
+      //  return view;
     }
-
+/*
     void setInitBtns(){
 
         LinearLayout whenLayout = (LinearLayout)view.findViewById(R.id.writing_when);
@@ -119,5 +124,5 @@ public class WritingFragment extends Fragment {
             costLayout.addView(tv);
         }
 
-    }
+    }*/
 }

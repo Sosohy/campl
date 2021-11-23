@@ -8,6 +8,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.view.WindowManager;
+import android.widget.ImageButton;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -26,6 +29,7 @@ public class SearchResultActivity extends AppCompatActivity {
     String searchData[] = new String[4]; //[0] duration [1] timing [2] cost [3] category
 
     camplAPI camplAPI;
+    ImageButton back;
 
     RecyclerView searchResult_recycler = null;
     ArrayList<PostDTO> searchPosts = new ArrayList<>();
@@ -34,11 +38,23 @@ public class SearchResultActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_search_result);
 
         camplAPI = MainActivity.camplAPI;
+        back = (ImageButton)findViewById(R.id.result_back);
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
 
-        getSearchData();
+        //getSearchData();
+
+        PostDTO p = new PostDTO();
+        searchPosts.add(p);
+        searchPosts.add(p);
 
         searchResult_recycler = findViewById(R.id.searchResult_recycler);
         searchResult_recycler.setAdapter(searchAdapter);
