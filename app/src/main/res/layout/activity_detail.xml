@@ -74,33 +74,36 @@
             android:layout_weight="0"
             android:background="@drawable/btn_timing2"
             android:gravity="center"
+            android:padding="10dp"
             android:text="timing"
             android:textColor="#000000"
-            android:textSize="14sp" />
+            android:textSize="12sp" />
 
         <TextView
             android:id="@+id/detail_duration"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_margin="5dp"
             android:layout_weight="0"
             android:background="@drawable/btn_default"
             android:gravity="center"
+            android:padding="10dp"
             android:text="during"
             android:textColor="#000000"
-            android:textSize="14sp" />
+            android:textSize="12sp" />
 
         <TextView
             android:id="@+id/detail_cost"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_margin="5dp"
             android:layout_weight="0"
             android:background="@drawable/btn_default"
             android:gravity="center"
+            android:padding="10dp"
             android:text="cost"
             android:textColor="#000000"
-            android:textSize="14sp" />
+            android:textSize="12sp" />
 
     </LinearLayout>
 

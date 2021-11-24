@@ -184,6 +184,13 @@ public class ModifyPostActivity extends AppCompatActivity {
         configDialog.findViewById(R.id.yes).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                if(timingData.size() == 0 || categoryData.size() == 0 || costData.size() == 0 || timingData.size() == 0)
+                {
+                    Toast.makeText(getApplicationContext(), "각 조건을 하나 이상 선택해주세요.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
                 int seq = -1;
                 String[] cData = new String[10];
                 for(int i=0; i<categoryData.size(); i++)
@@ -196,6 +203,10 @@ public class ModifyPostActivity extends AppCompatActivity {
                         if (response.isSuccessful()) {
                             //  seq = response.body();
                             Toast.makeText(getApplicationContext(), "글이 수정되었습니다", Toast.LENGTH_SHORT);
+
+                            Intent intent = new Intent(view.getContext(), DetailActivity.class);
+                            intent.putExtra("seq", seq);
+                            startActivity(intent);
                         }
                         Log.e("code", String.valueOf(response.code()));
                     }
