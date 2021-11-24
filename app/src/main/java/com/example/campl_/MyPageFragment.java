@@ -14,9 +14,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+
 import java.io.IOException;
+import java.util.ArrayList;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -31,6 +36,7 @@ public class MyPageFragment extends Fragment {
     View view;
     camplAPI camplAPI;
     Button signUpBtn;
+    UserDTO user = null;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -48,7 +54,47 @@ public class MyPageFragment extends Fragment {
 
         if(MainActivity.getUser() != -1){
             //일반 화면
+
             view = inflater.inflate(R.layout.fragment_my_page, container, false);
+
+            ImageView userImg = (ImageView)view.findViewById(R.id.userImg);
+            Button myPlan = (Button)view.findViewById(R.id.myPage_plan);
+            Button bookmark = (Button)view.findViewById(R.id.myPage_bookmark);
+            Button logout = (Button)view.findViewById(R.id.logout);
+
+            getUserInfo(MainActivity.getUser());
+
+            user = new UserDTO();
+            user.setUserImage("https://www.culture.go.kr/upload/editor_upload/2020/01/2001060314.jpg");
+            Glide.with(getContext()).load(user.getUserImage()).override(80, 80).circleCrop().into(userImg);
+
+            myPlan.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    //내 포스트 받아오기
+                    ArrayList<PostDTO> searchPosts = new ArrayList<>();
+
+                    Intent intent = new Intent(getContext(), SearchResultActivity.class);
+                    intent.putExtra("pageTitle", "내가 쓴 플랜");
+                    intent.putExtra("posts", searchPosts);
+                    startActivity(intent);
+                }
+            });
+
+            bookmark.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    //내 북마크 글 받아오기
+                    ArrayList<PostDTO> searchPosts = new ArrayList<>();
+
+                    Intent intent = new Intent(getContext(), SearchResultActivity.class);
+                    intent.putExtra("pageTitle", "내가 북마크한 플랜");
+                    intent.putExtra("posts", searchPosts);
+                    startActivity(intent);
+                }
+            });
+
+            //setMyPageFragment();
         }
         else{
             view = inflater.inflate(R.layout.fragment_login, container, false);
@@ -58,6 +104,24 @@ public class MyPageFragment extends Fragment {
         return view;
     }
 
+
+    void getUserInfo(int seq){
+       /* camplAPI.getUserInfo(seq).enqueue(new Callback<UserDTO>() {
+            @Override
+            public void onResponse(Call<UserDTO> call, Response<UserDTO> response) {
+                if(response.isSuccessful()){
+                    user = response.body();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<UserDTO> call, Throwable t) {
+
+            }
+        });
+
+        */
+    }
 
     void setLoginFragment(){
         EditText input_id = (EditText)view.findViewById(R.id.id);

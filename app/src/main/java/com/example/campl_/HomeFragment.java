@@ -30,11 +30,11 @@ public class HomeFragment extends Fragment {
 
     ArrayList<PostDTO> popularPosts = new ArrayList<PostDTO>();
     ArrayList<PostDTO> recommandPosts = new ArrayList<PostDTO>();
-    ArrayList<PostDTO> hotplacePosts = new ArrayList<PostDTO>();
+    ArrayList<PlaceDTO> hotplacePosts = new ArrayList<>();
 
     RecyclerHomeCardAdapter popularAdapter = new RecyclerHomeCardAdapter(popularPosts);
     RecyclerHomeCardAdapter recommandAdapter = new RecyclerHomeCardAdapter(recommandPosts);
-    RecyclerHomeCardAdapter hotplaceAdapter = new RecyclerHomeCardAdapter(hotplacePosts);
+    RecyclerHomeHotplaceAdapter hotplaceAdapter = new RecyclerHomeHotplaceAdapter(hotplacePosts);
 
     ImageButton searchBtn;
 
@@ -54,6 +54,8 @@ public class HomeFragment extends Fragment {
 
         PostDTO p = new PostDTO();
         popularPosts.add(p);
+        recommandPosts.add(p);
+        hotplacePosts.add(new PlaceDTO());
         
         searchBtn = view.findViewById(R.id.home_search);
         searchBtn.setOnClickListener(new View.OnClickListener() {
@@ -115,18 +117,18 @@ public class HomeFragment extends Fragment {
         });
 
         //핫픟레이스
-       /* camplAPI.getHotplaceList().enqueue(new Callback<List<PostDTO>>() {
+       /* camplAPI.getHotplaceList().enqueue(new Callback<List<UrlDTO>>() {
             @Override
-            public void onResponse(Call<List<PostDTO>> call, Response<List<PostDTO>> response) {
+            public void onResponse(Call<List<UrlDTO>> call, Response<List<UrlDTO>> response) {
                 if(response.isSuccessful()){
-                    List<PostDTO> list = response.body();
+                    List<UrlDTO> list = response.body();
                     hotplacePosts.clear();
                     hotplacePosts.addAll(list);
                 }
             }
 
             @Override
-            public void onFailure(Call<List<PostDTO>> call, Throwable t) {
+            public void onFailure(Call<List<UrlDTO>> call, Throwable t) {
             }
         });
         */

@@ -1,7 +1,12 @@
 package com.example.campl_;
 
-public class UserDTO {
+import java.io.Serializable;
+
+public class UserDTO implements Serializable {
     int userSeq;
+
+
+    String userImage;
     String nickName;
     String pwd;
     String userName;
@@ -11,6 +16,7 @@ public class UserDTO {
         this.nickName = nickName;
         this.pwd = pwd;
         this.userName = userName;
+        this.userImage = "default";
     }
 
     UserDTO(String nickName, String pwd) {
@@ -18,6 +24,7 @@ public class UserDTO {
         this.nickName = nickName;
         this.pwd = pwd;
         this.userName = "user";
+        this.userImage = "default";
     }
 
     UserDTO() {
@@ -25,6 +32,7 @@ public class UserDTO {
         this.nickName = "default";
         this.pwd = "default";
         this.userName = "default";
+        this.userImage = "default";
     }
 
     public void setUserSeq(int userSeq) {
@@ -56,5 +64,14 @@ public class UserDTO {
     public String getUserName() {
         return userName;
     }
+
+    public String getUserImage() {
+        return userImage;
+    }
+
+    public void setUserImage(String userImage) {
+        this.userImage = userImage;
+    }
+
 
 }

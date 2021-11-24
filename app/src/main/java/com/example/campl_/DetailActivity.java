@@ -41,6 +41,10 @@ public class DetailActivity extends AppCompatActivity {
     ArrayList<String> imgUrls = new ArrayList<>();
     RecyclerDetailImageAdapter detailImageAdapter = new RecyclerDetailImageAdapter(imgUrls);
 
+    RecyclerView link_recycler = null;
+    ArrayList<UrlDTO> urls = new ArrayList<>();
+    RecyclerWritingLinkAdapter linkAdapter = new RecyclerWritingLinkAdapter(urls);
+
     TextView title;
     TextView timing;
     TextView duration;
@@ -93,6 +97,10 @@ public class DetailActivity extends AppCompatActivity {
         detailImage_recycler = findViewById(R.id.detail_recycler);
         detailImage_recycler.setAdapter(detailImageAdapter);
         detailImageAdapter.notifyDataSetChanged();
+
+        link_recycler = (RecyclerView) findViewById(R.id.detail_link_recycler);
+        link_recycler.setAdapter(linkAdapter);
+        linkAdapter.notifyDataSetChanged();
     }
 
 
@@ -123,6 +131,7 @@ public class DetailActivity extends AppCompatActivity {
         cost.setText(camplAPI.costD[camplAPI.costQuery.indexOf(post.getCostType())]);
         content.setText(post.getContent());
         Collections.addAll(imgUrls, post.getPictureUrls());
+        Collections.addAll(urls, post.getUrls());
 
         if(post.isLike())
             like.setBackgroundResource(R.drawable.like);

@@ -2,9 +2,11 @@ package com.example.campl_;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
+import java.util.HashMap;
 import java.util.List;
 
-public class PostDTO {
+public class PostDTO implements Serializable {
     @SerializedName("seq")
     int seq;
     @SerializedName("title")
@@ -17,6 +19,9 @@ public class PostDTO {
     boolean isLike;
     @SerializedName("likeCnt")
     int likeCnt;
+
+    @SerializedName("urls")
+    UrlDTO[] urls;
     @SerializedName("pictureUrls")
     String[] pictureUrls;
     @SerializedName("content")
@@ -30,6 +35,7 @@ public class PostDTO {
     String timingType;
     @SerializedName("category")
     String[] category;
+
 
     public PostDTO(int seq, String title, UserDTO user, boolean isBookmark, boolean isLike, int likeCnt, String[] pictureUrls, String content, String costType, String durationTimeType, String timingType, String[] category) {
         this.seq = seq;
@@ -46,9 +52,10 @@ public class PostDTO {
         this.category = category;
     }
 
-    public PostDTO(String title, String content, String costType, String durationTimeType, String timingType, String[] category) {
+    public PostDTO(String title, String content, UrlDTO[] urls, String costType, String durationTimeType, String timingType, String[] category) {
         this.title = title;
         this.content = content;
+        this.urls = urls;
         this.costType = costType;
         this.durationTimeType = durationTimeType;
         this.timingType = timingType;
@@ -62,6 +69,7 @@ public class PostDTO {
         this.isBookmark = false;
         this.isLike = false;
         this.likeCnt = 0;
+        this.urls = new UrlDTO[]{new UrlDTO()};
         this.pictureUrls = new String[]{"https://stickershop.line-scdn.net/sticonshop/v1/product/5b5fde61040ab12caa925428/iPhone/main.png", "https://cloudfront-ap-northeast-1.images.arcpublishing.com/chosun/2TKUKXYMQF7ASZEUJLG7L4GM4I.jpg"};
         this.content = "default";
         this.costType = "UNDER1";
@@ -167,5 +175,11 @@ public class PostDTO {
         this.category = category;
     }
 
+    public UrlDTO[] getUrls() {
+        return urls;
+    }
 
+    public void setUrls(UrlDTO[] urls) {
+        this.urls = urls;
+    }
 }

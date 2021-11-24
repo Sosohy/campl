@@ -51,12 +51,12 @@ public class ModifyPostActivity extends AppCompatActivity {
     ImageButton back;
     ArrayList<MultipartBody.Part> files = new ArrayList<>();
 
-    RecyclerView writing_recycler = null;
+    RecyclerView writingImg_recycler = null;
     ArrayList<String> imgArray = new ArrayList<>();
     RecyclerWritingImageAdapter ImageAdapter = new RecyclerWritingImageAdapter(imgArray);
 
     RecyclerView link_recycler = null;
-    HashMap<String, String> urls = new HashMap<>();
+    ArrayList<UrlDTO> urls = new ArrayList<>();
     RecyclerWritingLinkAdapter linkAdapter = new RecyclerWritingLinkAdapter(urls);
 
     Button registerBtn;
@@ -139,11 +139,18 @@ public class ModifyPostActivity extends AppCompatActivity {
         for(int i=0; i<post.getPictureUrls().length; i++){
             imgArray.add(post.getPictureUrls()[i]);
         }
-        writing_recycler = (RecyclerView) findViewById(R.id.writing_img_recycler);
-        writing_recycler.setAdapter(ImageAdapter);
+        writingImg_recycler = (RecyclerView) findViewById(R.id.writing_img_recycler);
+        writingImg_recycler.setAdapter(ImageAdapter);
         ImageAdapter.notifyDataSetChanged();
 
         link_recycler = (RecyclerView) findViewById(R.id.link_recycler);
+        linkAdapter.setOnItemClickListener(new RecyclerWritingLinkAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View v, int pos) {
+                urls.remove(pos);
+                linkAdapter.notifyDataSetChanged();
+            }
+        });
         link_recycler.setAdapter(linkAdapter);
         linkAdapter.notifyDataSetChanged();
     }
@@ -165,30 +172,14 @@ public class ModifyPostActivity extends AppCompatActivity {
                 EditText name = (EditText)urlDialog.findViewById(R.id.url_name);
                 EditText link = (EditText)urlDialog.findViewById(R.id.url_link);
 
-                urls.put(name.getText().toString(), link.getText().toString());
+                urls.add(new UrlDTO(name.getText().toString(), link.getText().toString()));
                 urlDialog.dismiss();
             }
         });
     }
 
     public void showDialogSave(){
-        configDialog.show(); // 다이얼로그 띄우기
-
-        /* 이 함수 안에 원하는 디자인과 기능을 구현하면 된다. */
-
-        // 위젯 연결 방식은 각자 취향대로~
-        // '아래 아니오 버튼'처럼 일반적인 방법대로 연결하면 재사용에 용이하고,
-        // '아래 네 버튼'처럼 바로 연결하면 일회성으로 사용하기 편함.
-        // *주의할 점: findViewById()를 쓸 때는 -> 앞에 반드시 다이얼로그 이름을 붙여야 한다.
-
-        // 아니오 버튼
-        Button noBtn = configDialog.findViewById(R.id.no);
-        noBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                configDialog.dismiss();
-            }
-        });
+        configDialog.show();
 
         configDialog.findViewById(R.id.yes).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -197,7 +188,7 @@ public class ModifyPostActivity extends AppCompatActivity {
                 String[] cData = new String[10];
                 for(int i=0; i<categoryData.size(); i++)
                     cData[i] = camplAPI.categoryQuery.get(categoryData.get(i));
-                PostDTO post = new PostDTO(title.getText().toString(), content.getText().toString(), camplAPI.costQuery.get(costData.get(0)), camplAPI.durationQuery.get(durationData.get(0)), camplAPI.timingQuery.get(timingData.get(0)), cData);
+                PostDTO post = new PostDTO(title.getText().toString(), content.getText().toString(), urls.toArray(new UrlDTO[urls.size()]), camplAPI.costQuery.get(costData.get(0)), camplAPI.durationQuery.get(durationData.get(0)), camplAPI.timingQuery.get(timingData.get(0)), cData);
                 camplAPI.writingPost(post).enqueue(new Callback<ResponseBody>() {
                     @Override
                     public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -232,6 +223,14 @@ public class ModifyPostActivity extends AppCompatActivity {
                     });
                 }
                 finish();
+            }
+        });
+
+        Button noBtn = configDialog.findViewById(R.id.no);
+        noBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                configDialog.dismiss();
             }
         });
     }

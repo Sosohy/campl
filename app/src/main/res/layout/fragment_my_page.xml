@@ -8,4 +8,134 @@
     tools:context=".MyPageFragment">
 
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/textViewmm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/pure"
+            android:padding="20dp"
+            android:text="마이 페이지"
+            android:textColor="@color/themeColor"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/myPage_userModify"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0"
+            android:background="@drawable/btn_default"
+            android:text="수정"
+            app:layout_constraintBottom_toBottomOf="@+id/linearLayout6"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textViewmm"
+            android:layout_marginVertical="10dp"
+            android:layout_marginHorizontal="20dp"
+            />
+
+        <LinearLayout
+            android:id="@+id/linearLayout6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textViewmm"
+            android:gravity="center_vertical"
+            android:layout_marginVertical="10dp"
+            android:layout_marginHorizontal="20dp">
+
+            <ImageView
+                android:id="@+id/userImg"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_weight="0"
+                tools:src="@tools:sample/avatars" />
+
+            <TextView
+                android:id="@+id/myPage_userName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="0"
+                android:text="이름"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:layout_marginHorizontal="10dp"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="30dp"
+            android:layout_marginTop="10dp"
+            android:orientation="vertical"
+            android:paddingHorizontal="15dp"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout6"
+            tools:layout_editor_absoluteX="-27dp">
+
+            <View style="@style/Divider" />
+
+
+            <Button
+                android:id="@+id/myPage_plan"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/pure"
+                android:gravity="left|center_vertical"
+                android:padding="10dp"
+                android:text="내가 쓴 플랜"
+                android:textColor="#000000" />
+
+            <Button
+                android:id="@+id/myPage_bookmark"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/pure"
+                android:gravity="left|center_vertical"
+                android:padding="10dp"
+                android:text="내가 북마크한 플랜"
+                android:textColor="#000000" />
+
+            <View style="@style/Divider" />
+
+            <Button
+                android:id="@+id/changePw"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/pure"
+                android:gravity="left|center_vertical"
+                android:padding="10dp"
+                android:text="비밀번호 변경"
+                android:textColor="#000000" />
+
+            <Button
+                android:id="@+id/logout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/pure"
+                android:gravity="left|center_vertical"
+                android:padding="10dp"
+                android:text="로그아웃"
+                android:textColor="#000000" />
+
+            <Button
+                android:id="@+id/deleteUser"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/pure"
+                android:gravity="left|center_vertical"
+                android:padding="10dp"
+                android:text="회원 탈퇴"
+                android:textColor="#000000" />
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 </FrameLayout>

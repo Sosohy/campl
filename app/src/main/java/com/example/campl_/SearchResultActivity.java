@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -26,14 +27,14 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class SearchResultActivity extends AppCompatActivity {
 
-    String searchData[] = new String[4]; //[0] duration [1] timing [2] cost [3] category
-
     camplAPI camplAPI;
     ImageButton back;
 
     RecyclerView searchResult_recycler = null;
     ArrayList<PostDTO> searchPosts = new ArrayList<>();
     RecyclerSearchCardAdapter searchAdapter = new RecyclerSearchCardAdapter(searchPosts);
+
+    TextView pageTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +43,7 @@ public class SearchResultActivity extends AppCompatActivity {
         setContentView(R.layout.activity_search_result);
 
         camplAPI = MainActivity.camplAPI;
+        pageTitle = (TextView)findViewById(R.id.pageTitle);
         back = (ImageButton)findViewById(R.id.result_back);
         back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -50,55 +52,16 @@ public class SearchResultActivity extends AppCompatActivity {
             }
         });
 
-        //getSearchData();
+        Intent intent = getIntent();
+        String title = intent.getStringExtra("pageTitle");
+        ArrayList<PostDTO> intentPost = (ArrayList<PostDTO>)intent.getSerializableExtra("posts");
 
-        PostDTO p = new PostDTO();
-        searchPosts.add(p);
-        searchPosts.add(p);
+        pageTitle.setText(title);
+        searchPosts.addAll(intentPost);
 
         searchResult_recycler = findViewById(R.id.searchResult_recycler);
         searchResult_recycler.setAdapter(searchAdapter);
         searchAdapter.notifyDataSetChanged();
 
-    }
-
-    void getSearchData() {
-        Intent intent = getIntent();
-        int duration = intent.getIntExtra("duration", -1);
-        ArrayList<String> timing = intent.getStringArrayListExtra("timing");
-        ArrayList<String> category = intent.getStringArrayListExtra("category");
-        ArrayList<String> cost = intent.getStringArrayListExtra("cost");
-
-        switch (duration) {
-            case 0:
-                searchData[0] = "UNDER1";
-                break;
-            case 1:
-            case 2:
-                searchData[0] = "BETWEEN1_2";
-                break;
-            case 3:
-                searchData[0] = "BETWEEN2_3";
-                break;
-            case 4:
-                searchData[0] = "OVER3";
-                break;
-        }
-
-        camplAPI.getPostList(searchData[2], searchData[0], 0, 0, searchData[1]).enqueue(new Callback<List<PostDTO>>() {
-            @Override
-            public void onResponse(Call<List<PostDTO>> call, Response<List<PostDTO>> response) {
-                if (response.isSuccessful()) {
-                    List<PostDTO> list = response.body();
-                    searchPosts.clear();
-                    searchPosts.addAll(list);
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<PostDTO>> call, Throwable t) {
-
-            }
-        });
     }
 }

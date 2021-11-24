@@ -21,11 +21,11 @@ import java.util.Set;
 
 public class RecyclerWritingLinkAdapter extends RecyclerView.Adapter<RecyclerWritingLinkAdapter.ViewHolder> {
 
-    private HashMap<String, String> mData = new HashMap<>();
+    private ArrayList<UrlDTO> mData = new ArrayList<>();
     private OnItemClickListener mListener = null;
     private int checked = 0;
 
-    RecyclerWritingLinkAdapter(HashMap<String, String> list) {
+    RecyclerWritingLinkAdapter(ArrayList<UrlDTO> list) {
         mData = list;
     }
 
@@ -42,14 +42,13 @@ public class RecyclerWritingLinkAdapter extends RecyclerView.Adapter<RecyclerWri
 
     @Override
     public void onBindViewHolder(final RecyclerWritingLinkAdapter.ViewHolder holder, int position) {
-        final String item = mData.get(position);
-        String[] arr = mData.keySet().toArray(new String[0]);
+        final UrlDTO item = mData.get(position);
 
-        holder.link.setText(mData.get(arr[position]));
-        holder.name.setText(arr[position]);
+        holder.link.setText(item.getLink());
+        holder.name.setText(item.getName());
     }
 
-    public String getImgUrl(int position) {
+    public UrlDTO getImgUrl(int position) {
         return mData.get(position);
     }
 
@@ -59,7 +58,7 @@ public class RecyclerWritingLinkAdapter extends RecyclerView.Adapter<RecyclerWri
     }
 
     public interface OnItemClickListener {
-        void onItemClick(View v, int pos, boolean checkBox);
+        void onItemClick(View v, int pos);
     }
 
     public void setOnItemClickListener(OnItemClickListener listener) {
@@ -69,24 +68,24 @@ public class RecyclerWritingLinkAdapter extends RecyclerView.Adapter<RecyclerWri
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView name;
         TextView link;
-        ImageButton delete;
 
         ViewHolder(View itemView) {
             super(itemView);
 
+            // 아이템 클릭 이벤트 처리.
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    int pos = getAdapterPosition();
+                    if (pos != RecyclerView.NO_POSITION) {
+                        if(mListener != null)
+                            mListener.onItemClick(view, pos);
+                    }
+                }
+            });
             name = itemView.findViewById(R.id.item_name);
             link = itemView.findViewById(R.id.item_link);
-            delete = (ImageButton) itemView.findViewById(R.id.deleteLink);
         }
     }
 
-    public static <K, V> K getKey(Map<K, V> map, V value) {
-
-        for (K key : map.keySet()) {
-            if (value.equals(map.get(key))) {
-                return key;
-            }
-        }
-        return null;
-    }
 }
