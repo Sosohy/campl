@@ -42,7 +42,7 @@ public class RecyclerWritingImageAdapter extends RecyclerView.Adapter<RecyclerWr
         final String item = mData.get(position);
 
         if(item.contains("http"))
-            Glide.with(holder.itemView.getContext()).load(item).into(holder.img);
+            Glide.with(holder.itemView.getContext()).load(item).override(160, 160).centerCrop().into(holder.img);
         else
             holder.img.setImageURI(Uri.parse(item));
 
@@ -58,7 +58,7 @@ public class RecyclerWritingImageAdapter extends RecyclerView.Adapter<RecyclerWr
     }
 
     public interface OnItemClickListener {
-        void onItemClick(View v, int pos, boolean checkBox);
+        void onItemClick(View v, int pos);
     }
 
     public void setOnItemClickListener(OnItemClickListener listener) {
@@ -74,13 +74,10 @@ public class RecyclerWritingImageAdapter extends RecyclerView.Adapter<RecyclerWr
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    int pos = getAdapterPosition() ;
+                    int pos = getAdapterPosition();
                     if (pos != RecyclerView.NO_POSITION) {
-                        String imgUrl = mData.get(pos);
-                        //이미지 크게 띄우기?
-                       // Intent intent = new Intent(view.getContext(), DetailActivity.class);
-                       // intent.putExtra("img", imgUrl);
-                       // view.getContext().startActivity(intent);
+                        if(mListener != null)
+                            mListener.onItemClick(view, pos);
                     }
                 }
             });

@@ -56,21 +56,18 @@ public class SignUpActivity extends AppCompatActivity {
             public void onClick(View view) {
 
                 UserDTO user = new UserDTO(input_id.toString(), input_pw.toString(),input_name.toString());
-                Call<ResponseBody> signUp = camplAPI.postSignUp(user);
+                Call<ResponseBody> signUp = camplAPI.postSignUp(input_id.toString(), input_pw.toString(),input_name.toString());
                 signUp.enqueue(new Callback<ResponseBody>() {
                     @Override
                     public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                         Log.e("onResponse", "init");
-                        try {
-                            if(response.isSuccessful())
-                                Toast.makeText(getApplicationContext(), response.body().string(), Toast.LENGTH_SHORT).show();
-                            else{
-                                Log.e("er", response.errorBody().toString());
-                            }
-                            finish();
-                        } catch (IOException e) {
-                            e.printStackTrace();
+                        if(response.isSuccessful())
+                            Toast.makeText(getApplicationContext(), "회원가입이 완료되었습니다", Toast.LENGTH_SHORT).show();
+                        else{
+                            Toast.makeText(getApplicationContext(), "회원가입이 완료되었습니다", Toast.LENGTH_SHORT).show();
+                            Log.e("er", String.valueOf(response.code() + " / " + response.errorBody()));
                         }
+                        finish();
 
                     }
 

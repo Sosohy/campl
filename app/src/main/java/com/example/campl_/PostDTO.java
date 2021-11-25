@@ -52,6 +52,22 @@ public class PostDTO implements Serializable {
         this.category = category;
     }
 
+
+    public PostDTO(String title, UserDTO user, boolean isBookmark, boolean isLike, int likeCnt, String[] pictureUrls, String content, String costType, String durationTimeType, String timingType, String[] category) {
+        this.seq = -1;
+        this.title = title;
+        this.user = user;
+        this.isBookmark = isBookmark;
+        this.isLike = isLike;
+        this.likeCnt = likeCnt;
+        this.pictureUrls = pictureUrls;
+        this.content = content;
+        this.costType = costType;
+        this.durationTimeType = durationTimeType;
+        this.timingType = timingType;
+        this.category = category;
+    }
+
     public PostDTO(String title, String content, UrlDTO[] urls, String costType, String durationTimeType, String timingType, String[] category) {
         this.title = title;
         this.content = content;
@@ -70,7 +86,7 @@ public class PostDTO implements Serializable {
         this.isLike = false;
         this.likeCnt = 0;
         this.urls = new UrlDTO[]{new UrlDTO()};
-        this.pictureUrls = new String[]{"https://stickershop.line-scdn.net/sticonshop/v1/product/5b5fde61040ab12caa925428/iPhone/main.png", "https://cloudfront-ap-northeast-1.images.arcpublishing.com/chosun/2TKUKXYMQF7ASZEUJLG7L4GM4I.jpg"};
+        this.pictureUrls = new String[]{};
         this.content = "default";
         this.costType = "UNDER1";
         this.durationTimeType = "UNDER1";

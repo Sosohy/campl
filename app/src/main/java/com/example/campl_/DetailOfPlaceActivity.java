@@ -44,7 +44,7 @@ public class DetailOfPlaceActivity extends AppCompatActivity {
 
         camplAPI = MainActivity.camplAPI;
 
-        title = (TextView)findViewById(R.id.detailHotplace_content);
+        title = (TextView)findViewById(R.id.detailHotplace_title);
         content = (TextView)findViewById(R.id.detailHotplace_content);
         bookmark = (ImageButton)findViewById(R.id.detailHotplace_bookmark);
         back = (ImageButton)findViewById(R.id.detailHotplace_back);
@@ -59,7 +59,7 @@ public class DetailOfPlaceActivity extends AppCompatActivity {
         name = intent.getStringExtra("name");
         getDetailData(name);
 
-        place = new PlaceDTO();
+        place = (PlaceDTO) intent.getSerializableExtra("place");
         setInitContent();
     }
 

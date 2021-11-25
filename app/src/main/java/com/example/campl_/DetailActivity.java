@@ -6,6 +6,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.method.MovementMethod;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -66,7 +68,7 @@ public class DetailActivity extends AppCompatActivity {
 
         camplAPI = MainActivity.camplAPI;
 
-        title = (TextView)findViewById(R.id.detail_content);
+        title = (TextView)findViewById(R.id.detail_title);
         timing = (TextView)findViewById(R.id.detail_timing);
         duration = (TextView)findViewById(R.id.detail_duration);
         cost = (TextView)findViewById(R.id.detail_cost);
@@ -89,7 +91,8 @@ public class DetailActivity extends AppCompatActivity {
         seq = intent.getIntExtra("seq", -1);
         getDetailData(seq);
 
-        post = new PostDTO();
+        //TODO 지우기
+        post = (PostDTO)intent.getSerializableExtra("post");
         setInitContent();
         like.setOnClickListener(likeClick);
         bookmark.setOnClickListener(bookmarkClick);
@@ -121,7 +124,6 @@ public class DetailActivity extends AppCompatActivity {
 
 
     void setInitContent(){
-
         title.setText(post.getTitle());
         int tdx =  camplAPI.timingQuery.indexOf(post.getTimingType());
         timing.setText(camplAPI.timingD[tdx]);
@@ -130,8 +132,12 @@ public class DetailActivity extends AppCompatActivity {
         duration.setText(camplAPI.durationD[camplAPI.durationQuery.indexOf(post.getDurationTimeType())]);
         cost.setText(camplAPI.costD[camplAPI.costQuery.indexOf(post.getCostType())]);
         content.setText(post.getContent());
-        Collections.addAll(imgUrls, post.getPictureUrls());
-        Collections.addAll(urls, post.getUrls());
+
+        if(post.getPictureUrls() != null)
+            Collections.addAll(imgUrls, post.getPictureUrls());
+
+        if(post.getUrls() != null)
+            Collections.addAll(urls, post.getUrls());
 
         if(post.isLike())
             like.setBackgroundResource(R.drawable.like);
@@ -230,6 +236,8 @@ public class DetailActivity extends AppCompatActivity {
                         if (response.isSuccessful()){}
                             post.setBookmark(false);
                             bookmark.setBackgroundResource(R.drawable.save_1);
+                            MainActivity.bookmarkExample.remove(post);
+                            Log.e("dpd", "dddd");
                     }
 
                     @Override
@@ -244,7 +252,12 @@ public class DetailActivity extends AppCompatActivity {
                         if (response.isSuccessful()){}
                             post.setBookmark(true);
                             bookmark.setBackgroundResource(R.drawable.save);
+                        Log.e("dpd", "dddd");
+
+                        //TODO 지우기
+                        MainActivity.bookmarkExample.add(post);
                     }
+
 
                     @Override
                     public void onFailure(Call<ResponseBody> call, Throwable t) {

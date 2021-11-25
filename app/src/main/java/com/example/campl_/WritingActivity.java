@@ -90,7 +90,6 @@ public class WritingActivity extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_writing);
 
-
         camplAPI = MainActivity.camplAPI;
         setInitBtns();
 
@@ -166,10 +165,15 @@ public class WritingActivity extends AppCompatActivity {
     public void showDialogUrl(){
         urlDialog.show();
 
+        EditText name = (EditText)urlDialog.findViewById(R.id.url_name);
+        EditText link = (EditText)urlDialog.findViewById(R.id.url_link);
+
         Button noBtn = urlDialog.findViewById(R.id.url_no);
         noBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                name.setText("");
+                link.setText("");
                 urlDialog.dismiss();
             }
         });
@@ -177,10 +181,9 @@ public class WritingActivity extends AppCompatActivity {
         urlDialog.findViewById(R.id.url_yes).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                EditText name = (EditText)urlDialog.findViewById(R.id.url_name);
-                EditText link = (EditText)urlDialog.findViewById(R.id.url_link);
-
                 urls.add(new UrlDTO(name.getText().toString(), link.getText().toString()));
+                name.setText("");
+                link.setText("");
                 urlDialog.dismiss();
             }
         });
@@ -216,6 +219,15 @@ public class WritingActivity extends AppCompatActivity {
                             intent.putExtra("seq", seq);
                             startActivity(intent);
                         }
+
+                        //TODO 지우기
+                        Toast.makeText(getApplicationContext(), "글이 저장되었습니다", Toast.LENGTH_SHORT);
+                        MainActivity.myPostExample.add(post);
+                        Intent intent = new Intent(view.getContext(), DetailActivity.class);
+                        intent.putExtra("post", post);
+                        intent.putExtra("seq", seq);
+                        startActivity(intent);
+
                         Log.e("code", String.valueOf(response.code()));
                     }
 

@@ -1,10 +1,15 @@
 package com.example.campl_;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.io.Serializable;
 
 public class PlaceDTO implements Serializable {
+    @SerializedName("imgUrl")
     String imgUrl;
+    @SerializedName("name")
     String name;
+    @SerializedName("content")
     String content;
 
     public PlaceDTO(String imgUrl, String name, String content) {

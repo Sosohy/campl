@@ -39,6 +39,13 @@ public class SearchActivity extends AppCompatActivity {
 
         camplAPI = MainActivity.camplAPI;
         setSearchBtns();
+        back = (ImageButton)findViewById(R.id.search_back);
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
         submitBtn = (Button)findViewById(R.id.search_submit);
         submitBtn.setOnClickListener(SearchClick);
     }
@@ -77,6 +84,7 @@ public class SearchActivity extends AppCompatActivity {
             });
 
             Intent intent = new Intent(getApplicationContext(), SearchResultActivity.class);
+            searchPosts.addAll(MainActivity.postExample);
             intent.putExtra("pageTitle", "검색 결과");
             intent.putExtra("posts", searchPosts);
             startActivity(intent);

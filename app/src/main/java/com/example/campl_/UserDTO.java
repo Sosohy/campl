@@ -1,14 +1,17 @@
 package com.example.campl_;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.io.Serializable;
 
 public class UserDTO implements Serializable {
+    @SerializedName("userSeq")
     int userSeq;
-
-
-    String userImage;
+    @SerializedName("nickName")
     String nickName;
+    @SerializedName("pwd")
     String pwd;
+    @SerializedName("userName")
     String userName;
     
     UserDTO(String nickName, String pwd, String userName) {
@@ -16,7 +19,6 @@ public class UserDTO implements Serializable {
         this.nickName = nickName;
         this.pwd = pwd;
         this.userName = userName;
-        this.userImage = "default";
     }
 
     UserDTO(String nickName, String pwd) {
@@ -24,7 +26,6 @@ public class UserDTO implements Serializable {
         this.nickName = nickName;
         this.pwd = pwd;
         this.userName = "user";
-        this.userImage = "default";
     }
 
     UserDTO() {
@@ -32,7 +33,6 @@ public class UserDTO implements Serializable {
         this.nickName = "default";
         this.pwd = "default";
         this.userName = "default";
-        this.userImage = "default";
     }
 
     public void setUserSeq(int userSeq) {
@@ -65,13 +65,6 @@ public class UserDTO implements Serializable {
         return userName;
     }
 
-    public String getUserImage() {
-        return userImage;
-    }
-
-    public void setUserImage(String userImage) {
-        this.userImage = userImage;
-    }
 
 
 }

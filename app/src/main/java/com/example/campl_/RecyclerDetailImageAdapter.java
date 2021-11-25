@@ -39,7 +39,7 @@ public class RecyclerDetailImageAdapter extends RecyclerView.Adapter<RecyclerDet
     public void onBindViewHolder(final RecyclerDetailImageAdapter.ViewHolder holder, int position) {
 
         final String item = mData.get(position);
-        Glide.with(holder.itemView.getContext()).load(item).into(holder.img);
+        Glide.with(holder.itemView.getContext()).load(item).override(160, 160).centerCrop().into(holder.img);
     }
 
     public String getImgUrl(int position) {

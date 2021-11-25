@@ -42,7 +42,7 @@ public class RecyclerHomeHotplaceAdapter extends RecyclerView.Adapter<RecyclerHo
 
         holder.title.setText(item.getName());
         String url = item.getImgUrl();
-        Glide.with(holder.itemView.getContext()).load(url).override(200, 130).into(holder.img);
+        Glide.with(holder.itemView.getContext()).load(url).override(200, 130).centerCrop().into(holder.img);
     }
     
     public String getSeq(int position) {
@@ -77,6 +77,7 @@ public class RecyclerHomeHotplaceAdapter extends RecyclerView.Adapter<RecyclerHo
                         PlaceDTO cardData = mData.get(pos);
 
                         Intent intent = new Intent(view.getContext(), DetailOfPlaceActivity.class);
+                        intent.putExtra("place", cardData);
                         intent.putExtra("name", cardData.getName());
                         view.getContext().startActivity(intent);
                     }

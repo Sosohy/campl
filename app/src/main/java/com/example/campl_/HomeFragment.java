@@ -6,6 +6,7 @@ import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -50,13 +51,11 @@ public class HomeFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
-        //getHomePostData();
+        popularPosts.clear();
+        recommandPosts.clear();
+        hotplacePosts.clear();
+        getHomePostData();
 
-        PostDTO p = new PostDTO();
-        popularPosts.add(p);
-        recommandPosts.add(p);
-        hotplacePosts.add(new PlaceDTO());
-        
         searchBtn = view.findViewById(R.id.home_search);
         searchBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -92,6 +91,7 @@ public class HomeFragment extends Fragment {
                     List<PostDTO> list = response.body();
                     popularPosts.clear();
                     popularPosts.addAll(list);
+                    Log.e("성공", "성공");
                 }
             }
 
@@ -99,6 +99,10 @@ public class HomeFragment extends Fragment {
             public void onFailure(Call<List<PostDTO>> call, Throwable t) {
             }
         });
+
+        popularPosts.add(MainActivity.postExample.get(0));
+        popularPosts.add(MainActivity.postExample.get(1));
+        popularPosts.add(MainActivity.postExample.get(2));
 
         //추천글
         camplAPI.getRecommandList().enqueue(new Callback<List<PostDTO>>() {
@@ -110,12 +114,16 @@ public class HomeFragment extends Fragment {
                     recommandPosts.addAll(list);
                 }
             }
-
             @Override
             public void onFailure(Call<List<PostDTO>> call, Throwable t) {
             }
         });
 
+        recommandPosts.add(MainActivity.postExample.get(3));
+        recommandPosts.add(MainActivity.postExample.get(4));
+        recommandPosts.add(MainActivity.postExample.get(5));
+
+        hotplacePosts.addAll(MainActivity.placeExample);
         //핫픟레이스
        /* camplAPI.getHotplaceList().enqueue(new Callback<List<UrlDTO>>() {
             @Override

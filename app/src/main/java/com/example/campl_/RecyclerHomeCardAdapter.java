@@ -49,7 +49,7 @@ public class RecyclerHomeCardAdapter extends RecyclerView.Adapter<RecyclerHomeCa
         holder.timing.setBackgroundResource(camplAPI.homeBackGData[tdx]);
 
         String[] url = item.getPictureUrls();
-        Glide.with(holder.itemView.getContext()).load(url[0]).override(200, 130).into(holder.img);
+        Glide.with(holder.itemView.getContext()).load(url[0]).override(200, 130).centerCrop().into(holder.img);
     }
     
     public int getSeq(int position) {
@@ -87,6 +87,7 @@ public class RecyclerHomeCardAdapter extends RecyclerView.Adapter<RecyclerHomeCa
                         PostDTO cardData = mData.get(pos);
 
                         Intent intent = new Intent(view.getContext(), DetailActivity.class);
+                        intent.putExtra("post", cardData);
                         intent.putExtra("seq", cardData.getSeq());
                         view.getContext().startActivity(intent);
                     }

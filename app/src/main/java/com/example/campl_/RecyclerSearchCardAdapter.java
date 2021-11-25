@@ -49,7 +49,8 @@ public class RecyclerSearchCardAdapter extends RecyclerView.Adapter<RecyclerSear
         holder.timing.setBackgroundResource(camplAPI.homeBackGData[tdx]);
 
         String[] url = item.getPictureUrls();
-        Glide.with(holder.itemView.getContext()).load(url[0]).override(holder.img.getWidth(),150).into(holder.img);
+        if(url != null)
+            Glide.with(holder.itemView.getContext()).load(url[0]).override(holder.img.getWidth(),150).centerCrop().into(holder.img);
     }
     
     public int getSeq(int position) {
@@ -87,6 +88,7 @@ public class RecyclerSearchCardAdapter extends RecyclerView.Adapter<RecyclerSear
                         PostDTO cardData = mData.get(pos);
 
                         Intent intent = new Intent(view.getContext(), DetailActivity.class);
+                        intent.putExtra("post", cardData);
                         intent.putExtra("seq", cardData.getSeq());
                         view.getContext().startActivity(intent);
                     }

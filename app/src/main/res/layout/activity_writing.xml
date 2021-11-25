@@ -141,6 +141,9 @@
 
             </LinearLayout>
 
+            <View style="@style/Divider" android:layout_marginVertical="10dp"/>
+
+
             <TextView
                 android:id="@+id/contentText"
                 android:layout_width="match_parent"
@@ -179,7 +182,8 @@
                 android:gravity="start|top"
                 android:hint="내용을 입력하세요."
                 android:inputType="textMultiLine"
-                android:maxHeight="400dp" />
+                android:maxHeight="400dp"
+                android:paddingTop="10dp" />
 
         </LinearLayout>
     </ScrollView>
@@ -188,8 +192,9 @@
         android:id="@+id/writing_addImg"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_margin="10dp"
         android:background="@color/pure"
-        android:src="@drawable/photo"
+        android:src="@drawable/plusphoto"
         android:text="+"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -199,10 +204,12 @@
         android:id="@+id/writing_url"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_margin="10dp"
         android:background="@color/pure"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/writing_addImg"
-        app:srcCompat="@drawable/write" />
+        app:layout_constraintTop_toBottomOf="@+id/scrollView2"
+        app:srcCompat="@drawable/link" />
 
     <Button
         android:id="@+id/writing_register"

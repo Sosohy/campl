@@ -12,6 +12,7 @@ import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
+import retrofit2.http.Field;
 import retrofit2.http.FieldMap;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
@@ -39,53 +40,59 @@ public interface camplAPI {
     public static int[] homeBackGData = {R.drawable.small_go_school, R.drawable.small_free, R.drawable.small_go_home};
 
     //User Controller
-    @POST("/api/v1/users/signup") //("/posts")
+    @POST("api/v1/users/signup") //("/posts")
     Call<ResponseBody>postSignUp(@Body UserDTO user);
 
-    @POST("/api/v1/users/signin")
+    @FormUrlEncoded
+    @POST("api/v1/users/signup") //("/posts")
+    Call<ResponseBody>postSignUp(@Field("nickName") String userId,
+                                 @Field("pwd") String title,
+                                 @Field("userName") String text);
+
+    @POST("api/v1/users/signin")
     Call<ResponseBody>postSignIn(@Body UserDTO user);
 
-    @POST("/api/v1/users/signout")
+    @POST("api/v1/users/signout")
     Call<ResponseBody>postSignOut();
 
 
     // Post Controller
-    @GET("/api/v1/best/posts")
+    @GET("api/v1/best/posts")
     Call<List<PostDTO>>getPopularList();
 
-    @GET("/api/v1/recommand/posts")
+    @GET("api/v1/recommand/posts")
     Call<List<PostDTO>>getRecommandList();
 
-    @GET("/api/v1/bookmark/posts")
+    @GET("api/v1/bookmark/posts")
     Call<List<PostDTO>>getBookmarkList();
 
-    @GET("/api/v1/posts")
+    @GET("api/v1/posts")
     Call<List<PostDTO>>getPostList(@Query("costType") String cost, @Query("durationTimeType") String duration, @Query("pageSize") int pageSize, @Query("prevLastPostSeq") int prevLastPostSeq, @Query("timingType") String timing);
 
-    @GET("/api/v1/posts/{seq}")
+    @GET("api/v1/posts/{seq}")
     Call<PostDTO>getPost(@Path("seq") int seq);
 
-    @POST("/api/v1/posts")
+    @POST("api/v1/posts")
     Call<ResponseBody>writingPost(@Body PostDTO post);
 
-    @DELETE("/api/v1/posts/{seq}")
+    @DELETE("api/v1/posts/{seq}")
     Call<ResponseBody>deletePost(@Path("seq") int seq);
 
-    @POST("/api/v1/posts/{seq}/bookmark")
+    @POST("api/v1/posts/{seq}/bookmark")
     Call<ResponseBody>bookmarkPost(@Path("seq") int seq);
 
-    @DELETE("/api/v1/posts/{seq}/bookmark")
+    @DELETE("api/v1/posts/{seq}/bookmark")
     Call<ResponseBody>cancelBookmark(@Path("seq") int seq);
 
-    @POST("/api/v1/posts/{seq}/like")
+    @POST("api/v1/posts/{seq}/like")
     Call<ResponseBody>likePost(@Path("seq") int seq);
 
-    @DELETE("/api/v1/posts/{seq}/like")
+    @DELETE("api/v1/posts/{seq}/like")
     Call<ResponseBody>cancelLike(@Path("seq") int seq);
 
     //Img Controller
     @Multipart
-    @POST("/v1/posts/{seq}/pictures")
+    @POST("v1/posts/{seq}/pictures")
     Call<ResponseBody>addImage(@Path("seq") int seq, @Part ArrayList<MultipartBody.Part> imgs);
 
 
