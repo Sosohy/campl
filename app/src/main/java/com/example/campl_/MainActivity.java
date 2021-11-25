@@ -223,8 +223,46 @@ public class MainActivity extends AppCompatActivity {
                        "그리고 친해지는데는 진짜 술만한게 없는것 같아요 도리연이 닭도리탕 맛집인데 소주가 술술 들어갑니다 ㅎㅎㅎ 술마시면 꼭 차가운게 먹고싶잖아요 그래서 아이스크림이나 빙수를 먹는데 설빙도 있지만 일찍 닫아서 카페온더플랜으로 가요 자몽빙수도 맛있고 카카오빙수도 맛있어요!!", "BETWEEN3_5", "OVER3", "DISMISSAL", new String[]{"none"}));
 
 
-        placeExample.add(new PlaceDTO("https://mp-seoul-image-production-s3.mangoplate.com/1986732_1623955026008918.jpg?fit=around|512:512&crop=512:512;*,*&output-format=jpg&output-quality=80", "카페 피알디", "카페 피알디"));
-        placeExample.add(new PlaceDTO("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTLsBL0UKJE09BigjNVgGEy-Ged_tsY-gwxcQ&usqp=CAU","솔리드웍스", "솔리드웍스"));
-        placeExample.add(new PlaceDTO("https://t1.daumcdn.net/cfile/tistory/2564433D54C3196604", "문화식당", "문화식당"));
+        placeExample.add(new PlaceDTO("https://mp-seoul-image-production-s3.mangoplate.com/1986732_1623955026008918.jpg?fit=around|512:512&crop=512:512;*,*&output-format=jpg&output-quality=80", "카페 피알디", "위치\n" +
+                "서울 성북구 동소문로25길 9 휴림빌딩 1층 101호\n" +
+                "\n" +
+                "영업시간\n" +
+                "화~일 12:00~22:00\n" +
+                "월요일 휴무\n" +
+                "\n" +
+                "메뉴\n" +
+                "\n" +
+                "PRD라떼 6500원\n" +
+                "PRD샌드위치 8500원\n" +
+                "아인슈페너 5500원\n" +
+                "카페피츠 6000원\n" +
+                "\n" +
+                "PRD / pull revolving door\n" +
+                "http://instagram.com/prd.drink"));
+        placeExample.add(new PlaceDTO("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTLsBL0UKJE09BigjNVgGEy-Ged_tsY-gwxcQ&usqp=CAU","솔리드웍스", "위치\n" +
+                "서울 성북구 동소문로24길 35 1층\n" +
+                "\n" +
+                "영업시간\n" +
+                "매일 12:00~22:00\n" +
+                "\n" +
+                "메뉴\n" +
+                "더블컵(2가지맛) 3900원\n" +
+                "*젤라또 맛은 매일 변동\n"));
+        placeExample.add(new PlaceDTO("https://t1.daumcdn.net/cfile/tistory/2564433D54C3196604", "문화식당", "위치\n" +
+                "서울 성북구 보문로30나길 37 지하1층\n" +
+                "\n" +
+                "영업시간\n" +
+                "월~토 12:00~24:00\n" +
+                "일 12:00~23:00\n" +
+                "브레이크 타임 15:30~17:30\n" +
+                "\n" +
+                "메뉴\n" +
+                "오므라이스 12000원\n" +
+                "루꼴라 올리오 13000원\n" +
+                "라코타치즈 샐러드 파스타 13000원\n" +
+                "삼합 18000원\n" +
+                "\n" +
+                "문화식당 돈암동\n" +
+                "https://instagram.com/munhwabistro"));
     }
 }

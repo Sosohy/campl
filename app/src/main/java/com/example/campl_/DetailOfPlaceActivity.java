@@ -7,12 +7,15 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -30,6 +33,7 @@ public class DetailOfPlaceActivity extends AppCompatActivity {
 
     TextView title;
     TextView content;
+    ImageView img;
 
     ImageButton bookmark;
     ImageButton back;
@@ -46,6 +50,8 @@ public class DetailOfPlaceActivity extends AppCompatActivity {
 
         title = (TextView)findViewById(R.id.detailHotplace_title);
         content = (TextView)findViewById(R.id.detailHotplace_content);
+        img = (ImageView)findViewById(R.id.hotPlaceImg);
+
         bookmark = (ImageButton)findViewById(R.id.detailHotplace_bookmark);
         back = (ImageButton)findViewById(R.id.detailHotplace_back);
         back.setOnClickListener(new View.OnClickListener() {
@@ -83,6 +89,7 @@ public class DetailOfPlaceActivity extends AppCompatActivity {
 
     void setInitContent(){
         title.setText(place.getName());
+        Glide.with(getApplicationContext()).load(place.getImgUrl()).override(img.getWidth(),150).centerCrop().into(img);
         content.setText(place.getContent());
     }
 }

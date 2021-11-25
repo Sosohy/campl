@@ -49,6 +49,7 @@ public class RecyclerHomeCardAdapter extends RecyclerView.Adapter<RecyclerHomeCa
         holder.timing.setBackgroundResource(camplAPI.homeBackGData[tdx]);
 
         String[] url = item.getPictureUrls();
+        if(url != null)
         Glide.with(holder.itemView.getContext()).load(url[0]).override(200, 130).centerCrop().into(holder.img);
     }
     

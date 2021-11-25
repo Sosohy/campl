@@ -41,10 +41,13 @@ public class RecyclerWritingImageAdapter extends RecyclerView.Adapter<RecyclerWr
     public void onBindViewHolder(final RecyclerWritingImageAdapter.ViewHolder holder, int position) {
         final String item = mData.get(position);
 
-        if(item.contains("http"))
-            Glide.with(holder.itemView.getContext()).load(item).override(160, 160).centerCrop().into(holder.img);
-        else
-            holder.img.setImageURI(Uri.parse(item));
+        if(item != null){
+            if(item.contains("http"))
+                Glide.with(holder.itemView.getContext()).load(item).override(160, 160).centerCrop().into(holder.img);
+            else
+                holder.img.setImageURI(Uri.parse(item));
+        }
+
 
     }
 

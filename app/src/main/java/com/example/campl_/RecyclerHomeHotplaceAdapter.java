@@ -42,6 +42,8 @@ public class RecyclerHomeHotplaceAdapter extends RecyclerView.Adapter<RecyclerHo
 
         holder.title.setText(item.getName());
         String url = item.getImgUrl();
+
+        if(url != null)
         Glide.with(holder.itemView.getContext()).load(url).override(200, 130).centerCrop().into(holder.img);
     }
     
