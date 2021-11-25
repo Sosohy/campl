@@ -162,6 +162,7 @@ public class DetailActivity extends AppCompatActivity {
                     switch (item.getItemId()){
                         case R.id.modify_post:
                             Intent intent = new Intent(getApplicationContext(), ModifyPostActivity.class);
+                            intent.putExtra("post", post);
                             intent.putExtra("seq", seq);
                             startActivity(intent);
                             finish();

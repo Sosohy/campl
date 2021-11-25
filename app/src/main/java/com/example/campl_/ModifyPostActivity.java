@@ -96,7 +96,7 @@ public class ModifyPostActivity extends AppCompatActivity {
         seq = intent.getIntExtra("seq", -1);
         getDetailData(seq);
 
-        post = new PostDTO();
+        post = (PostDTO)intent.getSerializableExtra("post");
 
         setInitBtns();
         title.setText(post.getTitle());
