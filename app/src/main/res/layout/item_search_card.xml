@@ -4,11 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_margin="10dp"
     android:layout_marginHorizontal="16dp"
     android:layout_marginVertical="5dp"
     android:background="@drawable/border_home_card"
-    android:orientation="vertical"
-    android:padding="15dp">
+    android:orientation="vertical">
 
     <ImageView
         android:id="@+id/searchCard_img"
@@ -28,22 +28,25 @@
         android:maxLines="2"
         android:minWidth="340dp"
         android:minLines="2"
+        android:padding="10dp"
+        android:paddingTop="10dp"
         android:text="타이틀 \n타이틀"
         android:textColor="#000000"
-        android:textSize="18sp"
+        android:textSize="14sp"
         android:textStyle="bold" />
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:padding="10dp">
 
         <TextView
             android:id="@+id/searchCard_timing"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp"
+            android:layout_marginLeft="5dp"
             android:layout_weight="0"
             android:background="@drawable/small_go_home"
             android:gravity="center"
@@ -52,13 +55,14 @@
             android:paddingRight="7dp"
             android:paddingBottom="5dp"
             android:text="timing"
+            android:textSize="8sp"
             android:textStyle="bold" />
 
         <TextView
             android:id="@+id/searchCard_duration"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp"
+            android:layout_marginLeft="5dp"
             android:layout_weight="0"
             android:background="@drawable/border_default_color"
             android:gravity="center"
@@ -67,13 +71,14 @@
             android:paddingRight="7dp"
             android:paddingBottom="5dp"
             android:text="duration"
+            android:textSize="8sp"
             android:textStyle="bold" />
 
         <TextView
             android:id="@+id/searchCard_cost"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp"
+            android:layout_marginLeft="5dp"
             android:layout_weight="0"
             android:background="@drawable/border_default_color"
             android:gravity="center"
@@ -82,6 +87,7 @@
             android:paddingRight="7dp"
             android:paddingBottom="5dp"
             android:text="cost"
+            android:textSize="8sp"
             android:textStyle="bold" />
 
     </LinearLayout>

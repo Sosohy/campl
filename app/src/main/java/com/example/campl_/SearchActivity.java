@@ -55,11 +55,13 @@ public class SearchActivity extends AppCompatActivity {
         @Override
         public void onClick(View view) {
 
-            if(timingData.size() == 0 || categoryData.size() == 0 || costData.size() == 0 || timingData.size() == 0)
-            {
-                Toast.makeText(getApplicationContext(), "검색 조건을 하나 이상 선택해주세요.", Toast.LENGTH_SHORT).show();
-                return;
-            }
+            //TODO 나중에 디폴트값으로 바꾸기
+                if(timingData.size() == 0)
+                    timingData.add(0);
+                if(categoryData.size() == 0)
+                    categoryData.add(0);
+                if(costData.size() == 0)
+                    costData.add(0);
 
             ArrayList<PostDTO> searchPosts = new ArrayList<>();
             //TODO :나중에 카테고리 추가 되면 카테고리 배열로 넣기 -> 함수도 수정
@@ -151,6 +153,7 @@ public class SearchActivity extends AppCompatActivity {
             });;
             tv.setBackgroundResource(camplAPI.xmlData[i]);
             tv.setText(camplAPI.timingD[i]);
+            tv.setTextSize(14);
             tv.setPadding(10, 0, 10, 0);
             whenLayout.addView(tv);
         }
@@ -174,6 +177,7 @@ public class SearchActivity extends AppCompatActivity {
             });
             tv.setBackgroundResource(R.drawable.btn_default);
             tv.setText(camplAPI.categoryD[i]);
+            tv.setTextSize(14);
             tv.setPadding(10, 0, 10, 0);
             gl.addView(tv);
         }
@@ -196,6 +200,7 @@ public class SearchActivity extends AppCompatActivity {
             });
             tv.setBackgroundResource(R.drawable.btn_default);
             tv.setText(camplAPI.costD[i]);
+            tv.setTextSize(14);
             tv.setPadding(10, 0, 10, 0);
             costLayout.addView(tv);
         }

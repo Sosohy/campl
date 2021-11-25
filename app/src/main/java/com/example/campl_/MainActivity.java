@@ -43,6 +43,9 @@ public class MainActivity extends AppCompatActivity {
     Button signUpBtn;
     Fragment homeFrag, writingFrag, myPageFrag;
 
+    public static final int[] tabIcon = {R.drawable.home_1, R.drawable.write, R.drawable.mypage};
+    public static final int[] tabClickIcon = {R.drawable.home, R.drawable.photo, R.drawable.mypage_1};
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,27 +61,27 @@ public class MainActivity extends AppCompatActivity {
         camplAPI = retrofit.create(camplAPI.class);
 
         tabs = (TabLayout) findViewById(R.id.tabLayout);
+
         homeFrag = new HomeFragment();
         writingFrag = new WritingFragment();
         myPageFrag = new MyPageFragment();
         getSupportFragmentManager().beginTransaction().add(R.id.frame, homeFrag).commit();
 
-        tabs.getTabAt(0).setIcon(R.drawable.home);
+        setCustomTabs();
         tabs.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 int position = tab.getPosition();
 
-                if (position != 1)
-                    setDefault();
-
+                if(position != 1)
+                    setCustomTabs();
                 selected = null;
                 if (position == 0) {
                     selected = homeFrag;
-                    tabs.getTabAt(0).setIcon(R.drawable.home);
+                    setClickIcon(position);
                 } else if (position == 2) {
                     selected = myPageFrag;
-                    tabs.getTabAt(2).setIcon(R.drawable.mypage_1);
+                    setClickIcon(position);
                 }
 
                 if (position == 1) {
@@ -104,11 +107,40 @@ public class MainActivity extends AppCompatActivity {
                     Intent intent = new Intent(getApplicationContext(), WritingActivity.class);
                     startActivity(intent);
                 } else {
+                    int position = tab.getPosition();
+                    if (position == 0) {
+                        selected = homeFrag;
+
+                    } else if (position == 2) {
+                        selected = myPageFrag;
+                    }
                     getSupportFragmentManager().beginTransaction().replace(R.id.frame, selected).commit();
                 }
             }
         });
     }
+
+
+    private void setCustomTabs() {
+        for (int i = 0; i < tabIcon.length; i++) {
+            View view = getLayoutInflater().inflate(R.layout.customtab,null);
+            TabLayout.Tab tab = tabs.getTabAt(i);
+            view.findViewById(R.id.tab_icon).setBackgroundResource(tabIcon[i]);
+            if(tab!=null){
+                tab.setCustomView(null);
+                tab.setCustomView(view);
+            }
+        }
+    }
+
+    void setClickIcon(int clickIcon){
+        View view = getLayoutInflater().inflate(R.layout.customtab,null);
+        TabLayout.Tab t = tabs.getTabAt(clickIcon);
+        view.findViewById(R.id.tab_icon).setBackgroundResource(tabClickIcon[clickIcon]);
+        tabs.getTabAt(clickIcon).setCustomView(null);
+        tabs.getTabAt(clickIcon).setCustomView(view);
+    }
+
 
     public void setDefault() {
         tabs.getTabAt(0).setIcon(R.drawable.home_1);
