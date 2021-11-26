@@ -36,7 +36,7 @@ public interface camplAPI {
     public static String[] costD = {"1만원 이하", "1~3만원", "3~5만원", "5만원 이상"};
 
     public static int[] xmlData = {R.drawable.btn_timing0, R.drawable.btn_timing1, R.drawable.btn_timing2};
-    public static int[] backGData = {R.drawable.go_school, R.drawable.free, R.drawable.go_home};
+    public static int[] backGData = {R.drawable.btn_timing0_color, R.drawable.btn_timing1_color, R.drawable.btn_timing2_color};
     public static int[] homeBackGData = {R.drawable.small_go_school, R.drawable.small_free, R.drawable.small_go_home};
 
     //User Controller

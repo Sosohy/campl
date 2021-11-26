@@ -55,7 +55,6 @@ public class MainActivity extends AppCompatActivity {
         //TODO : 추후에 지우기
         createExPost();
 
-
         Gson gson = new GsonBuilder().setLenient().create();
         retrofit = new Retrofit.Builder().baseUrl(camplAPI.BASE_URL).addConverterFactory(GsonConverterFactory.create(gson)).build();
         camplAPI = retrofit.create(camplAPI.class);
@@ -68,6 +67,7 @@ public class MainActivity extends AppCompatActivity {
         getSupportFragmentManager().beginTransaction().add(R.id.frame, homeFrag).commit();
 
         setCustomTabs();
+        setClickIcon(0);
         tabs.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
@@ -141,12 +141,6 @@ public class MainActivity extends AppCompatActivity {
         tabs.getTabAt(clickIcon).setCustomView(view);
     }
 
-
-    public void setDefault() {
-        tabs.getTabAt(0).setIcon(R.drawable.home_1);
-        tabs.getTabAt(1).setIcon(R.drawable.write);
-        tabs.getTabAt(2).setIcon(R.drawable.mypage);
-    }
 
     public static int getUser() {
         return user;
