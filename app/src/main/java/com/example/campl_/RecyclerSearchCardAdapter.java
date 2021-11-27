@@ -89,6 +89,7 @@ public class RecyclerSearchCardAdapter extends RecyclerView.Adapter<RecyclerSear
 
                         Intent intent = new Intent(view.getContext(), DetailActivity.class);
                         intent.putExtra("post", cardData);
+                        intent.putExtra("seq", cardData.getSeq());
                         view.getContext().startActivity(intent);
                     }
                 }

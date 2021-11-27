@@ -76,6 +76,8 @@ public class PostDTO implements Serializable {
         this.durationTimeType = durationTimeType;
         this.timingType = timingType;
         this.categoryTypeList = category;
+        pictureUrls = new String[]{""};
+        user = new UserDTO();
     }
 
     public PostDTO() {

@@ -76,10 +76,32 @@ public class DetailActivity extends AppCompatActivity {
         more.setOnClickListener(optionClick);
 
         Intent intent = getIntent();
+        seq = intent.getIntExtra("seq", -1);
+        post = (PostDTO) intent.getSerializableExtra("post");
         //getDetailData(seq);
 
-        post = (PostDTO)intent.getSerializableExtra("post");
-        seq = post.getSeq();
+        camplAPI.getPost(seq).enqueue(new Callback<PostDTO>() {
+            @Override
+            public void onResponse(Call<PostDTO> call, Response<PostDTO> response) {
+                PostDTO p = new PostDTO();
+                if(response.isSuccessful()) {
+                    p = (PostDTO) response.body();
+                    post = p;
+                    Log.e("detail", String.valueOf(response.code()));
+
+                    Log.e("seq", String.valueOf(seq));
+                    setInitContent();
+                }
+            }
+
+
+            @Override
+            public void onFailure(Call<PostDTO> call, Throwable t) {
+                t.printStackTrace();
+            }
+        });
+
+
         setInitContent();
         like.setOnClickListener(likeClick);
         bookmark.setOnClickListener(bookmarkClick);
@@ -98,8 +120,10 @@ public class DetailActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<PostDTO> call, Response<PostDTO> response) {
                 if(response.isSuccessful())
-                    post = response.body();
+                    post = (PostDTO) response.body();
+                Log.e("detail", String.valueOf(response.code()));
             }
+
 
             @Override
             public void onFailure(Call<PostDTO> call, Throwable t) {

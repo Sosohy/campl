@@ -49,10 +49,14 @@ public class HomeFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
-        popularPosts.clear();
-        recommandPosts.clear();
-        hotplacePosts.clear();
-        getHomePostData();
+        camplAPI = MainActivity.camplAPI;
+        popular_recycler = view.findViewById(R.id.popular_recyclerView);
+        recommand_recycler = view.findViewById(R.id.recommand_recyclerView);
+        hotplace_recycler = view.findViewById(R.id.hotplace_recyclerView);
+
+        popular_recycler.setAdapter(popularAdapter);
+        recommand_recycler.setAdapter(recommandAdapter);
+        hotplace_recycler.setAdapter(hotplaceAdapter);
 
         searchBtn = view.findViewById(R.id.home_search);
         searchBtn.setOnClickListener(new View.OnClickListener() {
@@ -63,17 +67,11 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        popular_recycler = view.findViewById(R.id.popular_recyclerView);
-        recommand_recycler = view.findViewById(R.id.recommand_recyclerView);
-        hotplace_recycler = view.findViewById(R.id.hotplace_recyclerView);
-
-        popular_recycler.setAdapter(popularAdapter);
-        recommand_recycler.setAdapter(recommandAdapter);
-        hotplace_recycler.setAdapter(hotplaceAdapter);
-
         popularAdapter.notifyDataSetChanged();
         recommandAdapter.notifyDataSetChanged();
         hotplaceAdapter.notifyDataSetChanged();
+
+        getHomePostData();
 
         return view;
     }
@@ -86,9 +84,8 @@ public class HomeFragment extends Fragment {
             @Override
             public void onResponse(Call<List<PostDTO>> call, Response<List<PostDTO>> response) {
                 if (response.isSuccessful()) {
-                    List<PostDTO> list = response.body();
-                    popularPosts.clear();
-                    popularPosts.addAll(list);
+                    ArrayList<PostDTO> p = (ArrayList<PostDTO>) response.body();
+                    popularAdapter.notifyDataSetChanged();
                 }
                 Log.e("popular", String.valueOf(response.code()));
             }
@@ -103,9 +100,8 @@ public class HomeFragment extends Fragment {
             @Override
             public void onResponse(Call<List<PostDTO>> call, Response<List<PostDTO>> response) {
                 if (response.isSuccessful()) {
-                    List<PostDTO> list = response.body();
-                    recommandPosts.clear();
-                    recommandPosts.addAll(list);
+                    recommandPosts = (ArrayList<PostDTO>) response.body();
+                    recommandAdapter.notifyDataSetChanged();
                 }
                 Log.e("recommand", String.valueOf(response.code()));
             }
@@ -119,10 +115,9 @@ public class HomeFragment extends Fragment {
             @Override
             public void onResponse(Call<List<PlaceDTO>> call, Response<List<PlaceDTO>> response) {
                 if (response.isSuccessful()) {
-                    List<PlaceDTO> list = response.body();
-                    hotplacePosts.clear();
-                    hotplacePosts.addAll(list);
-                }
+                    hotplacePosts = (ArrayList<PlaceDTO>) response.body();
+                    hotplaceAdapter.notifyDataSetChanged();
+            }
                 Log.e("place", String.valueOf(response.code()));
             }
 

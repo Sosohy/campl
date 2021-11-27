@@ -44,6 +44,7 @@ public class SearchResultActivity extends AppCompatActivity {
         ArrayList<PostDTO> intentPost = (ArrayList<PostDTO>)intent.getSerializableExtra("posts");
 
         pageTitle.setText(title);
+        searchPosts.clear();
         searchPosts.addAll(intentPost);
 
         searchResult_recycler = findViewById(R.id.searchResult_recycler);
