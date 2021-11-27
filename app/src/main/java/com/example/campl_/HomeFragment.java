@@ -18,12 +18,10 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class HomeFragment extends Fragment {
 
-    camplAPI camplAPI;
+    CamplAPI camplAPI;
 
     RecyclerView popular_recycler = null;
     RecyclerView recommand_recycler = null;
@@ -91,18 +89,14 @@ public class HomeFragment extends Fragment {
                     List<PostDTO> list = response.body();
                     popularPosts.clear();
                     popularPosts.addAll(list);
-                    Log.e("성공", "성공");
                 }
+                Log.e("popular", String.valueOf(response.code()));
             }
 
             @Override
             public void onFailure(Call<List<PostDTO>> call, Throwable t) {
             }
         });
-
-        popularPosts.add(MainActivity.postExample.get(0));
-        popularPosts.add(MainActivity.postExample.get(1));
-        popularPosts.add(MainActivity.postExample.get(2));
 
         //추천글
         camplAPI.getRecommandList().enqueue(new Callback<List<PostDTO>>() {
@@ -113,33 +107,30 @@ public class HomeFragment extends Fragment {
                     recommandPosts.clear();
                     recommandPosts.addAll(list);
                 }
+                Log.e("recommand", String.valueOf(response.code()));
             }
             @Override
             public void onFailure(Call<List<PostDTO>> call, Throwable t) {
             }
         });
 
-        recommandPosts.add(MainActivity.postExample.get(3));
-        recommandPosts.add(MainActivity.postExample.get(4));
-        recommandPosts.add(MainActivity.postExample.get(5));
-
-        hotplacePosts.addAll(MainActivity.placeExample);
-        //핫픟레이스
-       /* camplAPI.getHotplaceList().enqueue(new Callback<List<UrlDTO>>() {
+        //핫플레이스
+        camplAPI.getPlaceList().enqueue(new Callback<List<PlaceDTO>>() {
             @Override
-            public void onResponse(Call<List<UrlDTO>> call, Response<List<UrlDTO>> response) {
-                if(response.isSuccessful()){
-                    List<UrlDTO> list = response.body();
+            public void onResponse(Call<List<PlaceDTO>> call, Response<List<PlaceDTO>> response) {
+                if (response.isSuccessful()) {
+                    List<PlaceDTO> list = response.body();
                     hotplacePosts.clear();
                     hotplacePosts.addAll(list);
                 }
+                Log.e("place", String.valueOf(response.code()));
             }
 
             @Override
-            public void onFailure(Call<List<UrlDTO>> call, Throwable t) {
+            public void onFailure(Call<List<PlaceDTO>> call, Throwable t) {
+
             }
         });
-        */
 
 
     }

@@ -2,15 +2,10 @@ package com.example.campl_;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.PopupMenu;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
@@ -19,26 +14,36 @@ import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class DetailOfPlaceActivity extends AppCompatActivity {
 
-    camplAPI camplAPI;
+    CamplAPI camplAPI;
     PlaceDTO place = null;
 
+    RecyclerView detailImage_recycler = null;
+    ArrayList<String> imgUrls = new ArrayList<>();
+    RecyclerDetailImageAdapter detailImageAdapter = new RecyclerDetailImageAdapter(imgUrls);
+
+    RecyclerView link_recycler = null;
+    ArrayList<UrlDTO> urls = new ArrayList<>();
+    RecyclerWritingLinkAdapter linkAdapter = new RecyclerWritingLinkAdapter(urls);
+
+    RecyclerView menu_recycler = null;
+    ArrayList<String> menuList = new ArrayList<>();
+    RecyclerHotplaceMenuAdapter menuListAdapter = new RecyclerHotplaceMenuAdapter(menuList);
+
     TextView title;
-    TextView content;
-    ImageView img;
+    TextView location;
+    TextView time;
 
     ImageButton bookmark;
     ImageButton back;
 
-    String name = "";
+    int seq = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,8 +54,8 @@ public class DetailOfPlaceActivity extends AppCompatActivity {
         camplAPI = MainActivity.camplAPI;
 
         title = (TextView)findViewById(R.id.detailHotplace_title);
-        content = (TextView)findViewById(R.id.detailHotplace_content);
-        img = (ImageView)findViewById(R.id.hotPlaceImg);
+        location = (TextView)findViewById(R.id.detailHotplace_location);
+        time = (TextView)findViewById(R.id.detailHotplace_time);
 
         bookmark = (ImageButton)findViewById(R.id.detailHotplace_bookmark);
         back = (ImageButton)findViewById(R.id.detailHotplace_back);
@@ -62,16 +67,27 @@ public class DetailOfPlaceActivity extends AppCompatActivity {
         });
 
         Intent intent = getIntent();
-        name = intent.getStringExtra("name");
-        getDetailData(name);
+        seq = intent.getIntExtra("seq", -1);
+        getDetailData(seq);
 
         place = (PlaceDTO) intent.getSerializableExtra("place");
         setInitContent();
+
+        detailImage_recycler = (RecyclerView)findViewById(R.id.hotplaceImg_recycler);
+        detailImage_recycler.setAdapter(detailImageAdapter);
+        detailImageAdapter.notifyDataSetChanged();
+
+        link_recycler = (RecyclerView)findViewById(R.id.hotplaceLink_recycler);
+        link_recycler.setAdapter(linkAdapter);
+        linkAdapter.notifyDataSetChanged();
+
+        menu_recycler = (RecyclerView)findViewById(R.id.menu_recycler);
+        menu_recycler.setAdapter(menuListAdapter);
+        menuListAdapter.notifyDataSetChanged();
     }
 
-
-    public void getDetailData(String name){
-       /* camplAPI.getHotplace(name).enqueue(new Callback<PlaceDTO>() {
+    public void getDetailData(int seq){
+        camplAPI.getPlaceDTO(seq).enqueue(new Callback<PlaceDTO>() {
             @Override
             public void onResponse(Call<PlaceDTO> call, Response<PlaceDTO> response) {
                 if(response.isSuccessful())
@@ -80,16 +96,32 @@ public class DetailOfPlaceActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<PlaceDTO> call, Throwable t) {
-                t.printStackTrace();
+
             }
         });
-        */
     }
-
 
     void setInitContent(){
         title.setText(place.getName());
-        Glide.with(getApplicationContext()).load(place.getImgUrl()).override(img.getWidth(),150).centerCrop().into(img);
-        content.setText(place.getContent());
+        location.setText(place.getLocation());
+        time.setText(place.getOperatingTime());
+        if(place.getPictureUrls() != null)
+            Collections.addAll(imgUrls, place.getPictureUrls());
+        if(!place.getLinkUrl().equals(""))
+            urls.addAll(getUrlDTOs(place.getLinkUrl()));
+        if(!place.getMenu().equals(""))
+            Collections.addAll(menuList, place.getMenu().split(","));
+
+    }
+
+    ArrayList<UrlDTO> getUrlDTOs(String urls){
+        ArrayList<UrlDTO> urlDTOS = new ArrayList<>();
+        String[] split = urls.split(",");
+
+        for(int i=0; i<split.length; i++){
+            String[] url = split[i].split("_");
+            urlDTOS.add(new UrlDTO(url[0], url[1]));
+        }
+        return urlDTOS;
     }
 }

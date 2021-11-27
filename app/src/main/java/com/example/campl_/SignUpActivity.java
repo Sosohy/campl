@@ -10,16 +10,6 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.HashMap;
-
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -30,7 +20,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class SignUpActivity extends AppCompatActivity {
 
     public static Retrofit retrofit;
-    public static camplAPI camplAPI;
+    public static CamplAPI camplAPI;
 
     EditText input_id;
     EditText input_pw;
@@ -49,26 +39,28 @@ public class SignUpActivity extends AppCompatActivity {
         signUp = (Button)findViewById(R.id.btn_submit);
 
         retrofit = new Retrofit.Builder().baseUrl(camplAPI.BASE_URL).addConverterFactory(GsonConverterFactory.create()).build();
-        camplAPI = retrofit.create(camplAPI.class);
+        camplAPI = retrofit.create(CamplAPI.class);
 
         signUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                UserDTO user = new UserDTO(input_id.toString(), input_pw.toString(),input_name.toString());
-                Call<ResponseBody> signUp = camplAPI.postSignUp(input_id.toString(), input_pw.toString(),input_name.toString());
-                signUp.enqueue(new Callback<ResponseBody>() {
+
+
+
+
+
+                UserDTO user = new UserDTO(input_id.getText().toString(), input_pw.getText().toString(), input_name.getText().toString());
+                camplAPI.postSignUp(user).enqueue(new Callback<ResponseBody>() {
                     @Override
                     public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                         Log.e("onResponse", "init");
                         if(response.isSuccessful())
                             Toast.makeText(getApplicationContext(), "회원가입이 완료되었습니다", Toast.LENGTH_SHORT).show();
                         else{
-                            Toast.makeText(getApplicationContext(), "회원가입이 완료되었습니다", Toast.LENGTH_SHORT).show();
                             Log.e("er", String.valueOf(response.code() + " / " + response.errorBody()));
                         }
                         finish();
-
                     }
 
                     @Override

@@ -23,7 +23,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -37,7 +36,7 @@ import retrofit2.Response;
 public class ModifyPostActivity extends AppCompatActivity {
 
     private final int GET_GALLERY_IMAGE = 200;
-    camplAPI camplAPI;
+    CamplAPI camplAPI;
     View view;
 
     ArrayList<Integer> durationData = new ArrayList<>();
@@ -192,10 +191,14 @@ public class ModifyPostActivity extends AppCompatActivity {
                 }
 
                 int seq = -1;
-                String[] cData = new String[10];
-                for(int i=0; i<categoryData.size(); i++)
-                    cData[i] = camplAPI.categoryQuery.get(categoryData.get(i));
-                PostDTO post = new PostDTO(title.getText().toString(), content.getText().toString(), urls.toArray(new UrlDTO[urls.size()]), camplAPI.costQuery.get(costData.get(0)), camplAPI.durationQuery.get(durationData.get(0)), camplAPI.timingQuery.get(timingData.get(0)), cData);
+                ArrayList<String> cData = new ArrayList<>();
+                if(categoryData.size() != 0){
+                    for(int i=0; i<categoryData.size(); i++)
+                        cData.add(camplAPI.categoryQuery.get(categoryData.get(i)));
+                }else
+                    cData.add("");
+
+                PostDTO post = new PostDTO(title.getText().toString(), content.getText().toString(), getUrlString(urls), camplAPI.costQuery.get(costData.get(0)), camplAPI.durationQuery.get(durationData.get(0)), camplAPI.timingQuery.get(timingData.get(0)), cData.toArray(new String[cData.size()]));
                 camplAPI.writingPost(post).enqueue(new Callback<ResponseBody>() {
                     @Override
                     public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -244,6 +247,17 @@ public class ModifyPostActivity extends AppCompatActivity {
                 configDialog.dismiss();
             }
         });
+    }
+
+
+    String getUrlString(ArrayList<UrlDTO> urlDTOS){
+        if(urlDTOS.size() ==0) return null;
+
+        String s = "";
+        for(int i=0; i<urlDTOS.size(); i++)
+            s += (urlDTOS.get(i).toString() + ",");
+
+        return s;
     }
 
     @Override

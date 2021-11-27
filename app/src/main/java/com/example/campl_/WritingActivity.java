@@ -1,24 +1,14 @@
 package com.example.campl_;
 
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Dialog;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.graphics.ImageDecoder;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
-import android.os.FileUtils;
-import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
@@ -30,33 +20,22 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URI;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Locale;
 
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.http.Multipart;
 
 
 public class WritingActivity extends AppCompatActivity {
 
     private final int GET_GALLERY_IMAGE = 200;
-    camplAPI camplAPI;
+    CamplAPI camplAPI;
     View view;
 
     ArrayList<Integer> durationData = new ArrayList<>();
@@ -116,7 +95,6 @@ public class WritingActivity extends AppCompatActivity {
             }
         });
 
-
         back = (ImageButton) findViewById(R.id.writing_back);
         back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -162,6 +140,17 @@ public class WritingActivity extends AppCompatActivity {
         linkAdapter.notifyDataSetChanged();
     }
 
+    String getUrlString(ArrayList<UrlDTO> urlDTOS){
+        if(urlDTOS.size() ==0) return "";
+
+        String s = "";
+        for(int i=0; i<urlDTOS.size(); i++)
+            s += (urlDTOS.get(i).toString() + ",");
+
+        return s;
+    }
+
+
     public void showDialogUrl(){
         urlDialog.show();
 
@@ -203,10 +192,14 @@ public class WritingActivity extends AppCompatActivity {
                 }
 
                 int seq = 0;
-                String[] cData = new String[10];
-                for(int i=0; i<categoryData.size(); i++)
-                    cData[i] = camplAPI.categoryQuery.get(categoryData.get(i));
-                PostDTO post = new PostDTO(title.getText().toString(), content.getText().toString(), urls.toArray(new UrlDTO[urls.size()]), camplAPI.costQuery.get(costData.get(0)), camplAPI.durationQuery.get(durationData.get(0)), camplAPI.timingQuery.get(timingData.get(0)), cData);
+                ArrayList<String> cData = new ArrayList<>();
+                if(categoryData.size() != 0){
+                    for(int i=0; i<categoryData.size(); i++)
+                        cData.add(camplAPI.categoryQuery.get(categoryData.get(i)));
+                }else
+                    cData.add("");
+
+                PostDTO post = new PostDTO(title.getText().toString(), content.getText().toString(), getUrlString(urls), camplAPI.costQuery.get(costData.get(0)), camplAPI.durationQuery.get(durationData.get(0)), camplAPI.timingQuery.get(timingData.get(0)), cData.toArray(new String[cData.size()]));
                 camplAPI.writingPost(post).enqueue(new Callback<ResponseBody>() {
                     @Override
                     public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -216,19 +209,10 @@ public class WritingActivity extends AppCompatActivity {
                             Toast.makeText(getApplicationContext(), "글이 저장되었습니다", Toast.LENGTH_SHORT);
 
                             Intent intent = new Intent(view.getContext(), DetailActivity.class);
-                            intent.putExtra("seq", seq);
+                            intent.putExtra("post", post);
                             startActivity(intent);
                         }
-
-                        //TODO 지우기
-                        Toast.makeText(getApplicationContext(), "글이 저장되었습니다", Toast.LENGTH_SHORT);
-                        MainActivity.myPostExample.add(post);
-                        Intent intent = new Intent(view.getContext(), DetailActivity.class);
-                        intent.putExtra("post", post);
-                        intent.putExtra("seq", seq);
-                        startActivity(intent);
-
-                        Log.e("code", String.valueOf(response.code()));
+                        Log.e("writing", String.valueOf(response.code()));
                     }
 
                     @Override

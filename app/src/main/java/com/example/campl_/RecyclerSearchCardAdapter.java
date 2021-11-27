@@ -41,15 +41,15 @@ public class RecyclerSearchCardAdapter extends RecyclerView.Adapter<RecyclerSear
         final PostDTO item = mData.get(position);
 
         holder.title.setText(item.getTitle());
-        holder.duration.setText(camplAPI.durationD[camplAPI.durationQuery.indexOf(item.getDurationTimeType())]);
-        holder.cost.setText(camplAPI.costD[camplAPI.costQuery.indexOf(item.getCostType())]);
+        holder.duration.setText(CamplAPI.durationD[CamplAPI.durationQuery.indexOf(item.getDurationTimeType())]);
+        holder.cost.setText(CamplAPI.costD[CamplAPI.costQuery.indexOf(item.getCostType())]);
 
-        int tdx =  camplAPI.timingQuery.indexOf(item.getTimingType());
-        holder.timing.setText(camplAPI.timingD[tdx]);
-        holder.timing.setBackgroundResource(camplAPI.homeBackGData[tdx]);
+        int tdx =  CamplAPI.timingQuery.indexOf(item.getTimingType());
+        holder.timing.setText(CamplAPI.timingD[tdx]);
+        holder.timing.setBackgroundResource(CamplAPI.homeBackGData[tdx]);
 
         String[] url = item.getPictureUrls();
-        if(url != null)
+        if(url.length != 0)
             Glide.with(holder.itemView.getContext()).load(url[0]).override(holder.img.getWidth(),150).centerCrop().into(holder.img);
     }
     
@@ -89,7 +89,6 @@ public class RecyclerSearchCardAdapter extends RecyclerView.Adapter<RecyclerSear
 
                         Intent intent = new Intent(view.getContext(), DetailActivity.class);
                         intent.putExtra("post", cardData);
-                        intent.putExtra("seq", cardData.getSeq());
                         view.getContext().startActivity(intent);
                     }
                 }

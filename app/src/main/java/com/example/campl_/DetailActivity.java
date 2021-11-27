@@ -1,42 +1,30 @@
 package com.example.campl_;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.method.MovementMethod;
-import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class DetailActivity extends AppCompatActivity {
 
-    camplAPI camplAPI;
+    CamplAPI camplAPI;
     PostDTO post = null;
 
     RecyclerView detailImage_recycler = null;
@@ -88,11 +76,10 @@ public class DetailActivity extends AppCompatActivity {
         more.setOnClickListener(optionClick);
 
         Intent intent = getIntent();
-        seq = intent.getIntExtra("seq", -1);
-        getDetailData(seq);
+        //getDetailData(seq);
 
-        //TODO 지우기
         post = (PostDTO)intent.getSerializableExtra("post");
+        seq = post.getSeq();
         setInitContent();
         like.setOnClickListener(likeClick);
         bookmark.setOnClickListener(bookmarkClick);
@@ -105,7 +92,6 @@ public class DetailActivity extends AppCompatActivity {
         link_recycler.setAdapter(linkAdapter);
         linkAdapter.notifyDataSetChanged();
     }
-
 
     public void getDetailData(int seq){
         camplAPI.getPost(seq).enqueue(new Callback<PostDTO>() {
@@ -136,8 +122,8 @@ public class DetailActivity extends AppCompatActivity {
         if(post.getPictureUrls() != null)
             Collections.addAll(imgUrls, post.getPictureUrls());
 
-        if(post.getUrls() != null)
-            Collections.addAll(urls, post.getUrls());
+        if(!post.getUrls().equals(""))
+            urls.addAll(getUrlDTOs(post.getUrls()));
 
         if(post.isLike())
             like.setBackgroundResource(R.drawable.like);
@@ -149,6 +135,18 @@ public class DetailActivity extends AppCompatActivity {
         else
             bookmark.setBackgroundResource(R.drawable.save_1);
     }
+
+    ArrayList<UrlDTO> getUrlDTOs(String urls){
+        ArrayList<UrlDTO> urlDTOS = new ArrayList<>();
+        String[] split = urls.split(",");
+
+        for(int i=0; i<split.length; i++){
+            String[] url = split[i].split("_");
+            urlDTOS.add(new UrlDTO(url[0], url[1]));
+        }
+        return urlDTOS;
+    }
+
 
     View.OnClickListener optionClick = new View.OnClickListener() {
         @Override
@@ -197,9 +195,11 @@ public class DetailActivity extends AppCompatActivity {
                 camplAPI.cancelLike(seq).enqueue(new Callback<ResponseBody>() {
                     @Override
                     public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                        if (response.isSuccessful()){}
+                        if (response.isSuccessful()) {
                             post.setLike(false);
                             like.setBackgroundResource(R.drawable.like_1);
+                        }
+                        Log.e("like", String.valueOf(response.code()));
                     }
 
                     @Override
@@ -211,9 +211,11 @@ public class DetailActivity extends AppCompatActivity {
                 camplAPI.likePost(seq).enqueue(new Callback<ResponseBody>() {
                     @Override
                     public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                        if (response.isSuccessful()){}
+                        if (response.isSuccessful()) {
                             post.setLike(true);
                             like.setBackgroundResource(R.drawable.like);
+                        }
+                        Log.e("bookmark", String.valueOf(response.code()));
                     }
 
                     @Override
@@ -234,11 +236,10 @@ public class DetailActivity extends AppCompatActivity {
                 camplAPI.cancelBookmark(seq).enqueue(new Callback<ResponseBody>() {
                     @Override
                     public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                        if (response.isSuccessful()){}
+                        if (response.isSuccessful()){
                             post.setBookmark(false);
                             bookmark.setBackgroundResource(R.drawable.save_1);
-                            MainActivity.bookmarkExample.remove(post);
-                            Log.e("dpd", "dddd");
+                        }
                     }
 
                     @Override
@@ -250,15 +251,11 @@ public class DetailActivity extends AppCompatActivity {
                 camplAPI.bookmarkPost(seq).enqueue(new Callback<ResponseBody>() {
                     @Override
                     public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                        if (response.isSuccessful()){}
+                        if (response.isSuccessful()){
                             post.setBookmark(true);
                             bookmark.setBackgroundResource(R.drawable.save);
-                        Log.e("dpd", "dddd");
-
-                        //TODO 지우기
-                        MainActivity.bookmarkExample.add(post);
+                        }
                     }
-
 
                     @Override
                     public void onFailure(Call<ResponseBody> call, Throwable t) {

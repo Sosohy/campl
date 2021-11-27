@@ -22,12 +22,12 @@ import retrofit2.http.Part;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 
-public interface camplAPI {
-    public static final String BASE_URL = "http://gonggang.yeokeong.com:80/"; // test url  "http://jsonplaceholder.typicode.com/"
+public interface CamplAPI {
+    public static final String BASE_URL = "https://gonggang.yeokeong.com/"; // test url  "http://jsonplaceholder.typicode.com/"
 
     public static ArrayList<String> timingQuery = new ArrayList(Arrays.asList("GOING_TO_SCHOOL", "EMPTY_LECTURE", "DISMISSAL"));
     public static ArrayList<String> durationQuery = new ArrayList(Arrays.asList("UNDER1", "BETWEEN1_2", "BETWEEN2_3", "OVER3"));
-    public static ArrayList<String> categoryQuery = new ArrayList(Arrays.asList("식당", "술", "디저트", "테마 카페", "문화생활", "방탈출", "운동", "쇼핑"));
+    public static ArrayList<String> categoryQuery = new ArrayList(Arrays.asList("RESTAURANT", "BAR", "DESERT", "THEMED_CAFE", "CULTURAL", "ROOM_ESCAPE", "EXERCISE", "SHOPPING"));
     public static ArrayList<String> costQuery = new ArrayList(Arrays.asList("UNDER1", "BETWEEN1_3", "BETWEEN3_5", "OVER5"));
 
     public static String[] timingD = {"학교 갈 때", "공강 시간에", "집 가는 길에"};
@@ -43,18 +43,11 @@ public interface camplAPI {
     @POST("api/v1/users/signup") //("/posts")
     Call<ResponseBody>postSignUp(@Body UserDTO user);
 
-    @FormUrlEncoded
-    @POST("api/v1/users/signup") //("/posts")
-    Call<ResponseBody>postSignUp(@Field("nickName") String userId,
-                                 @Field("pwd") String title,
-                                 @Field("userName") String text);
-
     @POST("api/v1/users/signin")
     Call<ResponseBody>postSignIn(@Body UserDTO user);
 
     @POST("api/v1/users/signout")
     Call<ResponseBody>postSignOut();
-
 
     // Post Controller
     @GET("api/v1/best/posts")
@@ -63,8 +56,11 @@ public interface camplAPI {
     @GET("api/v1/recommand/posts")
     Call<List<PostDTO>>getRecommandList();
 
-    @GET("api/v1/bookmark/posts")
+    @GET("/api/v1/bookmark/posts")
     Call<List<PostDTO>>getBookmarkList();
+
+    @GET("/api/v1/me/posts")
+    Call<List<PostDTO>>getMyPosts();
 
     @GET("api/v1/posts")
     Call<List<PostDTO>>getPostList(@Query("costType") String cost, @Query("durationTimeType") String duration, @Query("pageSize") int pageSize, @Query("prevLastPostSeq") int prevLastPostSeq, @Query("timingType") String timing);
@@ -89,6 +85,13 @@ public interface camplAPI {
 
     @DELETE("api/v1/posts/{seq}/like")
     Call<ResponseBody>cancelLike(@Path("seq") int seq);
+
+    @GET("api/v1/places/{seq}")
+    Call<PlaceDTO>getPlaceDTO(@Path("seq") int seq);
+
+    @GET("/api/v1/places")
+    Call<List<PlaceDTO>>getPlaceList();
+
 
     //Img Controller
     @Multipart

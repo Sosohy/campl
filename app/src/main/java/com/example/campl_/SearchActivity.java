@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -11,9 +12,10 @@ import android.widget.EditText;
 import android.widget.GridLayout;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import retrofit2.Call;
@@ -22,11 +24,15 @@ import retrofit2.Response;
 
 public class SearchActivity extends AppCompatActivity {
 
-    camplAPI camplAPI;
+    CamplAPI camplAPI;
     int durationData = 0;
     ArrayList<Integer> timingData = new ArrayList<>();
     ArrayList<Integer> categoryData = new ArrayList<>();
     ArrayList<Integer> costData = new ArrayList<>();
+
+    String timing = " ";
+    String category = " ";
+    String cost = " ";
 
     ImageButton back;
     Button submitBtn;
@@ -55,28 +61,34 @@ public class SearchActivity extends AppCompatActivity {
         @Override
         public void onClick(View view) {
 
-            //TODO 나중에 디폴트값으로 바꾸기
-                if(timingData.size() == 0)
-                    timingData.add(0);
-                if(categoryData.size() == 0)
-                    categoryData.add(0);
-                if(costData.size() == 0)
-                    costData.add(0);
+                if(timingData.size() != 0)
+                    timing = camplAPI.timingQuery.get(timingData.get(0));
+                if(costData.size() != 0)
+                    cost = camplAPI.costQuery.get(costData.get(0));
 
-            ArrayList<PostDTO> searchPosts = new ArrayList<>();
             //TODO :나중에 카테고리 추가 되면 카테고리 배열로 넣기 -> 함수도 수정
-            String[] cData = new String[10];
-            for(int i=0; i<categoryData.size(); i++)
-                cData[i] = camplAPI.categoryQuery.get(categoryData.get(i));
 
-            camplAPI.getPostList(camplAPI.costQuery.get(costData.get(0)), getDurationData(), 0, 0, camplAPI.timingQuery.get(timingData.get(0))).enqueue(new Callback<List<PostDTO>>() {
+            ArrayList<String> cData = new ArrayList<>();
+            if(categoryData.size() != 0){
+                for(int i=0; i<categoryData.size(); i++)
+                    cData.add(camplAPI.categoryQuery.get(categoryData.get(i)));
+            }else
+                cData.add("");
+
+            camplAPI.getPostList(cost, getDurationData(), 10, 50, timing).enqueue(new Callback<List<PostDTO>>() {
                 @Override
                 public void onResponse(Call<List<PostDTO>> call, Response<List<PostDTO>> response) {
+                    ArrayList<PostDTO> searchPosts = new ArrayList<>();
                     if (response.isSuccessful()) {
-                        List<PostDTO> list = response.body();
-                        searchPosts.clear();
-                        searchPosts.addAll(list);
+                        searchPosts = (ArrayList<PostDTO>) response.body();
+
+                        Intent intent = new Intent(getApplicationContext(), SearchResultActivity.class);
+                        intent.putExtra("pageTitle", "검색 결과");
+                        intent.putExtra("posts", searchPosts);
+                        startActivity(intent);
+                        finish();
                     }
+                    Log.e("search", String.valueOf(response.code()));
                 }
 
                 @Override
@@ -85,12 +97,7 @@ public class SearchActivity extends AppCompatActivity {
                 }
             });
 
-            Intent intent = new Intent(getApplicationContext(), SearchResultActivity.class);
-            searchPosts.addAll(MainActivity.postExample);
-            intent.putExtra("pageTitle", "검색 결과");
-            intent.putExtra("posts", searchPosts);
-            startActivity(intent);
-            finish();
+
         }
     };
 
@@ -100,7 +107,7 @@ public class SearchActivity extends AppCompatActivity {
         EditText start = (EditText)findViewById(R.id.searchTimeStart);
         EditText end = (EditText)findViewById(R.id.searchTimeEnd);
 
-        if((start.getText() != null && start.getText().equals("")) && (end.getText() != null && end.getText().equals(""))){
+        if((start.getText() != null && start.length() != 0) && (end.getText() != null && end.length() != 0)){
             int startT = Integer.parseInt(start.getText().toString());
             int endT = Integer.parseInt(end.getText().toString());
 
@@ -108,6 +115,8 @@ public class SearchActivity extends AppCompatActivity {
                 durationData = endT - startT;
             else
                 durationData = (12-startT) + endT;
+        }else{
+            return "";
         }
 
         switch (durationData) {
@@ -135,7 +144,6 @@ public class SearchActivity extends AppCompatActivity {
         LinearLayout categoryLayout = (LinearLayout)findViewById(R.id.search_category);
         LinearLayout costLayout = (LinearLayout)findViewById(R.id.search_cost);
 
-        int[] xmlData = {R.drawable.btn_timing0, R.drawable.btn_timing1, R.drawable.btn_timing2};
         for(int i = 0; i< camplAPI.timingD.length; i++){
             Button tv = new Button(getApplicationContext());
             int idx = i;

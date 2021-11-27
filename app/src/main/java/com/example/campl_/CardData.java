@@ -2,7 +2,7 @@ package com.example.campl_;
 
 import android.graphics.Bitmap;
 
-public class cardData {
+public class CardData {
     private int seq;
     private String title;
     private String imgUrl;
@@ -10,16 +10,16 @@ public class cardData {
     private String duration;
     private String cost;
 
-    public cardData() {
+    public CardData() {
         this.seq = 0;
         this.title = "";
         this.imgUrl = "";
-        this.timing = "DISMISSAL";
+        this.timing = "";
         this.duration = "";
         this.cost = "";
     }
 
-    public cardData(int seq, String title, String imgUrl, String timing, String duration, String cost) {
+    public CardData(int seq, String title, String imgUrl, String timing, String duration, String cost) {
         this.seq = seq;
         this.title = title;
         this.imgUrl = imgUrl;

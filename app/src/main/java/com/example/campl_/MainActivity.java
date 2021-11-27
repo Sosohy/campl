@@ -3,23 +3,23 @@ package com.example.campl_;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
-import android.app.TabActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.TabHost;
 import android.widget.Toast;
 
 import com.google.android.material.tabs.TabLayout;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import java.net.CookieManager;
+import java.net.CookiePolicy;
 import java.util.ArrayList;
 
-import okhttp3.ResponseBody;
-import retrofit2.Call;
+import okhttp3.JavaNetCookieJar;
+import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -30,17 +30,14 @@ public class MainActivity extends AppCompatActivity {
     public static ArrayList<PostDTO> myPostExample = new ArrayList<>();
     public static ArrayList<PostDTO> bookmarkExample = new ArrayList<>();
 
-
     private static int user = -1;
     public static UserDTO userObj = null;
     public static Retrofit retrofit;
-    public static camplAPI camplAPI;
+    public static CamplAPI camplAPI;
 
     TabLayout tabs;
     Fragment selected;
 
-
-    Button signUpBtn;
     Fragment homeFrag, writingFrag, myPageFrag;
 
     public static final int[] tabIcon = {R.drawable.home_1, R.drawable.write, R.drawable.mypage};
@@ -52,22 +49,27 @@ public class MainActivity extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_main);
 
-        //TODO : 추후에 지우기
-        createExPost();
-
         Gson gson = new GsonBuilder().setLenient().create();
-        retrofit = new Retrofit.Builder().baseUrl(camplAPI.BASE_URL).addConverterFactory(GsonConverterFactory.create(gson)).build();
-        camplAPI = retrofit.create(camplAPI.class);
+
+        final CookieManager cookieManager = new CookieManager();
+        cookieManager.setCookiePolicy(CookiePolicy.ACCEPT_ALL);
+
+        OkHttpClient client = new OkHttpClient.Builder()
+                .cookieJar(new JavaNetCookieJar(cookieManager))
+                .build();
+
+        retrofit = new Retrofit.Builder().client(client).baseUrl(camplAPI.BASE_URL).addConverterFactory(GsonConverterFactory.create(gson)).build();
+        camplAPI = retrofit.create(CamplAPI.class);
 
         tabs = (TabLayout) findViewById(R.id.tabLayout);
 
         homeFrag = new HomeFragment();
         writingFrag = new WritingFragment();
         myPageFrag = new MyPageFragment();
-        getSupportFragmentManager().beginTransaction().add(R.id.frame, homeFrag).commit();
+        getSupportFragmentManager().beginTransaction().add(R.id.frame, myPageFrag).commit();
 
         setCustomTabs();
-        setClickIcon(0);
+        setClickIcon(2);
         tabs.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
@@ -77,8 +79,15 @@ public class MainActivity extends AppCompatActivity {
                     setCustomTabs();
                 selected = null;
                 if (position == 0) {
-                    selected = homeFrag;
-                    setClickIcon(position);
+                    if (MainActivity.getUser() == -1){
+                        Toast.makeText(getApplicationContext(), "로그인이 필요한 서비스입니다.", Toast.LENGTH_SHORT).show();
+                        selected = myPageFrag;
+                        setClickIcon(2);
+                    }
+                    else{
+                        selected = homeFrag;
+                        setClickIcon(position);
+                    }
                 } else if (position == 2) {
                     selected = myPageFrag;
                     setClickIcon(position);
@@ -86,13 +95,13 @@ public class MainActivity extends AppCompatActivity {
 
                 if (position == 1) {
                     if (MainActivity.getUser() == -1) {
-                        Toast.makeText(getApplicationContext(), "로그인이 필요한 서비스입니다.", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), "로그인이 필요한 서비스입니다.", Toast.LENGTH_SHORT).show();
                     } else {
                         Intent intent = new Intent(getApplicationContext(), WritingActivity.class);
                         startActivity(intent);
                     }
                 } else {
-                    getSupportFragmentManager().beginTransaction().replace(R.id.frame, selected).commit();
+                        getSupportFragmentManager().beginTransaction().replace(R.id.frame, selected).commit();
                 }
 
             }
@@ -107,16 +116,26 @@ public class MainActivity extends AppCompatActivity {
                     Intent intent = new Intent(getApplicationContext(), WritingActivity.class);
                     startActivity(intent);
                 } else {
+                    setCustomTabs();
                     int position = tab.getPosition();
-                    if (position == 0) {
-                        selected = homeFrag;
 
+                    if (position == 0) {
+                        if (MainActivity.getUser() == -1){
+                            Toast.makeText(getApplicationContext(), "로그인이 필요한 서비스입니다.", Toast.LENGTH_SHORT).show();
+                            selected = myPageFrag;
+                            setClickIcon(2);
+                        }
+                        else{
+                            selected = homeFrag;
+                            setClickIcon(position);
+                        }
                     } else if (position == 2) {
                         selected = myPageFrag;
+                        setClickIcon(position);
                     }
-                    getSupportFragmentManager().beginTransaction().replace(R.id.frame, selected).commit();
+                        getSupportFragmentManager().beginTransaction().replace(R.id.frame, selected).commit();
+                    }
                 }
-            }
         });
     }
 
@@ -150,7 +169,7 @@ public class MainActivity extends AppCompatActivity {
         MainActivity.user = user;
     }
 
-    void createExPost() {
+  /*  void createExPost() {
         //POST EXAMPLE CODE 추후에 지우기
         postExample.add(new PostDTO("2시간 안에 누구보다 재밌게 노는 법", new UserDTO(), false, false, 0, new String[]{"https://mblogthumb-phinf.pstatic.net/MjAxOTAxMjRfOSAg/MDAxNTQ4MzI3NTM4ODI3.Ao8zEog1VR138wbRk0HCseJ-txSrgqssijxPOmKQCxwg.ATqp0s08jvi2mmYZ1ZdnhmItwlgS9ijpkRLIepv73G4g.JPEG.seodaram/IMG_6915.jpg?type=w800", "https://s3-ap-northeast-1.amazonaws.com/dcreviewsresized/20210528073409512_photo_931052eaee51.jpg"}, "개강 첫주에 OT가 일찍 끝나거나, 동아리 가기 전에 시간이 애매할 때 제가 자주 이용하는 루틴입니다\n" +
                 "일단 인도이웃에 가서 치킨카츠카레나 히레카츠카레를 먹어요 그리고 본크레페에 가서 크레페 하나를 먹어주면 2시간은 훌쩍 가더라고요 인도이웃은 음식이 금방 나오는 편인데 본크레페는 항상 사람이 많아서 줄서는시간이 좀 있어요 사장님 혼자 일하시다보니까 더 오래 걸리는 것 같아요 하지만 기다리는 보람이 있는 맛이에요!!! 이러면 2시간 훌쩍 가더라구요\n" +
@@ -176,7 +195,7 @@ public class MainActivity extends AppCompatActivity {
                 "\n" +
                 "\n" +
                 "혹시 예약하시려는 분들을 위해서 링크 놓고 갑니다~\n", "BETWEEN3_5", "OVER3", "DISMISSAL", new String[]{"none"});
-        exLink.setUrls(new UrlDTO[]{new UrlDTO("반듯한잔", "https://instagram.com/bandeut.hanjan"), new UrlDTO("연리지", "https://instagram.com/yeonridge_sswu"), new UrlDTO("천막집", "https://1000mak.modoo.at/?link=aidcnrxd")});
+        exLink.setUrls("반듯한잔_https://instagram.com/bandeut.hanjan,연리지_https://instagram.com/yeonridge_sswu,천막집_https://1000mak.modoo.at/?link=aidcnrxd");
         postExample.add(exLink);
 
         postExample.add(new PostDTO("수업 듣기 전에 밥 먹기 애매할 때 갈 식당", new UserDTO(), false, false, 0, new String[]{"https://s3-ap-northeast-1.amazonaws.com/dcreviewsresized/pre_20201023112058561_photo_931052eaee51.jpg", "https://mblogthumb-phinf.pstatic.net/MjAxNzEyMTNfMjcz/MDAxNTEzMTY4MzU2NDQ4.Lv-7Rc068mRj5qtREh-3y_ixb-Y1t577tgRdql-wXo8g.nS-l93uki6DnCxpSFgFQZr9FUUDLro7ubOY1kKeNGMIg.JPEG.gome1116/20171211_185531.jpg?type=w800", "https://blog.kakaocdn.net/dn/38kqm/btq8G5TA6So/0TCqePkVfhXdb7ULL23g4k/img.jpg", "https://mblogthumb-phinf.pstatic.net/MjAxOTA5MDlfMjI1/MDAxNTY4MDA5NzU5NDA1.7mGO0-QB0GG7eCbP-PZcGFl3RoHuylusdkqCP2MQgkYg.2g4-iVSvrh2_g-JcVi_FFf348J6WfodCLDUVyDWOr8Ug.JPEG.rayoonmom/20190909_110019.jpg?type=w800", "https://mp-seoul-image-production-s3.mangoplate.com/242355/1042666_1611589789052_3328?fit=around|512:512&crop=512:512;*,*&output-format=jpg&output-quality=80"},
@@ -206,7 +225,7 @@ public class MainActivity extends AppCompatActivity {
         exLink = new PostDTO("슬기로운 공강활용법", new UserDTO(), false, false, 0, new String[]{"https://search.pstatic.net/common/?autoRotate=true&quality=95&type=w750&src=https%3A%2F%2Fmyplace-phinf.pstatic.net%2F20191207_25%2F1575726144215c8vMb_JPEG%2Fupload_fc17facad3e4f769dae4b4a9b6c73b9d.jpeg", "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTsdVifmadmB18x90pAUVaN_zHJ3ICPevsATQ&usqp=CAU", "https://s3-ap-northeast-1.amazonaws.com/dcreviewsresized/300_300_20200317071820773_photo_c863440dd91a.jpg"},
                 "성여입 근처에 씨네큐가 있거든요 그래서 공강이 3시간이 넘는 날은 시간이 잘 맞으면 영화를 보러가요 스크린이 작긴 하지만 평일 낮에는 사람이 많지 않아서 쾌적하게 볼 수 있어서 괜찮았어요\n" +
                         "시간이 애매하면 그냥 솔리드웍스 가서 젤라또 하나 사서 성북천 산책해도 좋아요 봄에는 꽃도 많이 펴서 산책로도 예쁘고 고양이들도 종종 보여서 기분도 좋아지고 소소한 추억이 되더라고요!", "BETWEEN1_3", "OVER3", "EMPTY_LECTURE", new String[]{"none"});
-        exLink.setUrls(new UrlDTO[]{new UrlDTO("씨네큐 성신여대점 상영시간표", "https://www.cineq.co.kr/Theater/Movie?TheaterCode=1002")});
+        exLink.setUrls("씨네큐 성신여대점 상영시간표_https://www.cineq.co.kr/Theater/Movie?TheaterCode=1002");
         postExample.add(exLink);
 
         postExample.add(new PostDTO("어색한 동기들과 무조건 친해지는 법", new UserDTO(), false, false, 0, new String[]{"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR1SUxyEPhXMi-4xKVrWC1OUcTgmdXRh-g1NA&usqp=CAU", "https://s3-ap-northeast-1.amazonaws.com/dcreviewsresized/pre_20200107033116038_photo_931052eaee51.jpg", "https://s3-ap-northeast-1.amazonaws.com/dcreviewsresized/300_300_20211029085230084_photo_2f50fd31593a.jpg"},
@@ -259,4 +278,5 @@ public class MainActivity extends AppCompatActivity {
                 "문화식당 돈암동\n" +
                 "https://instagram.com/munhwabistro"));
     }
+   */
 }

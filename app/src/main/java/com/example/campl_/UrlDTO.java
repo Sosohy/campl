@@ -34,6 +34,8 @@ public class UrlDTO implements Serializable {
         this.link = link;
     }
 
-
-
+    @Override
+    public String toString() {
+        return name + "_" + link;
+    }
 }

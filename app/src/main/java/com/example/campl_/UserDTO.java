@@ -21,11 +21,11 @@ public class UserDTO implements Serializable {
         this.userName = userName;
     }
 
-    UserDTO(String nickName, String pwd) {
+    UserDTO(String userName, String pwd) {
         this.userSeq = -1;
-        this.nickName = nickName;
+        this.nickName = "";
         this.pwd = pwd;
-        this.userName = "user";
+        this.userName = userName;
     }
 
     UserDTO() {

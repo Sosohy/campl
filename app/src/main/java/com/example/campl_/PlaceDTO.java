@@ -5,38 +5,37 @@ import com.google.gson.annotations.SerializedName;
 import java.io.Serializable;
 
 public class PlaceDTO implements Serializable {
-    @SerializedName("imgUrl")
-    String imgUrl;
+    @SerializedName("seq")
+    int seq;
     @SerializedName("name")
     String name;
-    @SerializedName("content")
-    String content;
+    @SerializedName("linkUrl")
+    String linkUrl;
+    @SerializedName("location")
+    String location;
+    @SerializedName("menu")
+    String menu;
+    @SerializedName("operatingTime")
+    String operatingTime;
+    @SerializedName("pictureUrls")
+    String[] pictureUrls;
 
-    public PlaceDTO(String imgUrl, String name, String content) {
-        this.imgUrl = imgUrl;
+    public PlaceDTO(int seq, String name, String linkUrl, String location, String menu, String operatingTime, String[] pictureUrls) {
+        this.seq = seq;
         this.name = name;
-        this.content = content;
+        this.linkUrl = linkUrl;
+        this.location = location;
+        this.menu = menu;
+        this.operatingTime = operatingTime;
+        this.pictureUrls = pictureUrls;
     }
 
-    public PlaceDTO(String name, String content) {
-        this.imgUrl = "default";
-        this.name = name;
-        this.content = content;
+    public String getLinkUrl() {
+        return linkUrl;
     }
 
-    public PlaceDTO() {
-        this.imgUrl = "default";
-        this.name = "default";
-        this.content = "default";
-    }
-
-
-    public String getImgUrl() {
-        return imgUrl;
-    }
-
-    public void setImgUrl(String imgUrl) {
-        this.imgUrl = imgUrl;
+    public void setLinkUrl(String linkUrl) {
+        this.linkUrl = linkUrl;
     }
 
     public String getName() {
@@ -47,11 +46,43 @@ public class PlaceDTO implements Serializable {
         this.name = name;
     }
 
-    public String getContent() {
-        return content;
+    public int getSeq() {
+        return seq;
     }
 
-    public void setContent(String content) {
-        this.content = content;
+    public void setSeq(int seq) {
+        this.seq = seq;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public String getMenu() {
+        return menu;
+    }
+
+    public void setMenu(String menu) {
+        this.menu = menu;
+    }
+
+    public String getOperatingTime() {
+        return operatingTime;
+    }
+
+    public void setOperatingTime(String operatingTime) {
+        this.operatingTime = operatingTime;
+    }
+
+    public String[] getPictureUrls() {
+        return pictureUrls;
+    }
+
+    public void setPictureUrls(String[] pictureUrls) {
+        this.pictureUrls = pictureUrls;
     }
 }

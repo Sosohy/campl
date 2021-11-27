@@ -21,7 +21,7 @@ public class PostDTO implements Serializable {
     int likeCnt;
 
     @SerializedName("urls")
-    UrlDTO[] urls;
+    String urls;
     @SerializedName("pictureUrls")
     String[] pictureUrls;
     @SerializedName("content")
@@ -33,8 +33,8 @@ public class PostDTO implements Serializable {
     String durationTimeType;
     @SerializedName("timingType")
     String timingType;
-    @SerializedName("category")
-    String[] category;
+    @SerializedName("categoryTypeList")
+    String[] categoryTypeList;
 
 
     public PostDTO(int seq, String title, UserDTO user, boolean isBookmark, boolean isLike, int likeCnt, String[] pictureUrls, String content, String costType, String durationTimeType, String timingType, String[] category) {
@@ -49,7 +49,7 @@ public class PostDTO implements Serializable {
         this.costType = costType;
         this.durationTimeType = durationTimeType;
         this.timingType = timingType;
-        this.category = category;
+        this.categoryTypeList = category;
     }
 
 
@@ -65,17 +65,17 @@ public class PostDTO implements Serializable {
         this.costType = costType;
         this.durationTimeType = durationTimeType;
         this.timingType = timingType;
-        this.category = category;
+        this.categoryTypeList = category;
     }
 
-    public PostDTO(String title, String content, UrlDTO[] urls, String costType, String durationTimeType, String timingType, String[] category) {
+    public PostDTO(String title, String content, String urls, String costType, String durationTimeType, String timingType, String[] category) {
         this.title = title;
         this.content = content;
         this.urls = urls;
         this.costType = costType;
         this.durationTimeType = durationTimeType;
         this.timingType = timingType;
-        this.category = category;
+        this.categoryTypeList = category;
     }
 
     public PostDTO() {
@@ -85,13 +85,13 @@ public class PostDTO implements Serializable {
         this.isBookmark = false;
         this.isLike = false;
         this.likeCnt = 0;
-        this.urls = new UrlDTO[]{new UrlDTO()};
+        this.urls = "";
         this.pictureUrls = new String[]{};
         this.content = "default";
         this.costType = "UNDER1";
         this.durationTimeType = "UNDER1";
         this.timingType = "DISMISSAL";
-        this.category = new String[]{"default"};
+        this.categoryTypeList = new String[]{"default"};
     }
 
 
@@ -184,18 +184,18 @@ public class PostDTO implements Serializable {
     }
 
     public String[] getCategory() {
-        return category;
+        return categoryTypeList;
     }
 
     public void setCategory(String[] category) {
-        this.category = category;
+        this.categoryTypeList = category;
     }
 
-    public UrlDTO[] getUrls() {
+    public String getUrls() {
         return urls;
     }
 
-    public void setUrls(UrlDTO[] urls) {
+    public void setUrls(String urls) {
         this.urls = urls;
     }
 }
