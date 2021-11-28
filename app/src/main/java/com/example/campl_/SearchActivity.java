@@ -75,7 +75,7 @@ public class SearchActivity extends AppCompatActivity {
             }else
                 cData.add("");
 
-            camplAPI.getPostList(cost, getDurationData(), 10, 50, timing).enqueue(new Callback<List<PostDTO>>() {
+            camplAPI.getPostList(cost, getDurationData(), 10, 50, timing, cData.toArray(new String[cData.size()])).enqueue(new Callback<List<PostDTO>>() {
                 @Override
                 public void onResponse(Call<List<PostDTO>> call, Response<List<PostDTO>> response) {
                     ArrayList<PostDTO> searchPosts = new ArrayList<>();

@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -17,9 +18,13 @@ import com.google.gson.GsonBuilder;
 import java.net.CookieManager;
 import java.net.CookiePolicy;
 import java.util.ArrayList;
+import java.util.List;
 
 import okhttp3.JavaNetCookieJar;
 import okhttp3.OkHttpClient;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -29,6 +34,11 @@ public class MainActivity extends AppCompatActivity {
     public static ArrayList<PlaceDTO> placeExample = new ArrayList<>();
     public static ArrayList<PostDTO> myPostExample = new ArrayList<>();
     public static ArrayList<PostDTO> bookmarkExample = new ArrayList<>();
+
+
+    ArrayList<PostDTO> popularPosts = new ArrayList<PostDTO>();
+    ArrayList<PostDTO> recommandPosts = new ArrayList<PostDTO>();
+    ArrayList<PlaceDTO> hotplacePosts = new ArrayList<>();
 
     private static int user = -1;
     public static UserDTO userObj = null;
@@ -61,11 +71,19 @@ public class MainActivity extends AppCompatActivity {
         retrofit = new Retrofit.Builder().client(client).baseUrl(camplAPI.BASE_URL).addConverterFactory(GsonConverterFactory.create(gson)).build();
         camplAPI = retrofit.create(CamplAPI.class);
 
+        getHomePostData();
+
         tabs = (TabLayout) findViewById(R.id.tabLayout);
 
         homeFrag = new HomeFragment();
         writingFrag = new WritingFragment();
         myPageFrag = new MyPageFragment();
+
+        Bundle bundle = new Bundle(3); // 파라미터의 숫자는 전달하려는 값의 갯수
+        bundle.putSerializable("popular", popularPosts);
+        bundle.putSerializable("recommand", recommandPosts);
+        bundle.putSerializable("hotplace", hotplacePosts);
+
         getSupportFragmentManager().beginTransaction().add(R.id.frame, myPageFrag).commit();
 
         setCustomTabs();
@@ -85,6 +103,9 @@ public class MainActivity extends AppCompatActivity {
                         setClickIcon(2);
                     }
                     else{
+
+                        homeFrag.setArguments(bundle);
+
                         selected = homeFrag;
                         setClickIcon(position);
                     }
@@ -139,6 +160,54 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    public void getHomePostData() {
+        camplAPI = MainActivity.camplAPI;
+
+        // 인기글
+        camplAPI.getPopularList().enqueue(new Callback<List<PostDTO>>() {
+            @Override
+            public void onResponse(Call<List<PostDTO>> call, Response<List<PostDTO>> response) {
+                if (response.isSuccessful()) {
+                    popularPosts = (ArrayList<PostDTO>) response.body();
+                }
+                Log.e("popular", String.valueOf(response.code()));
+            }
+
+            @Override
+            public void onFailure(Call<List<PostDTO>> call, Throwable t) {
+            }
+        });
+
+        //추천글
+        camplAPI.getRecommandList().enqueue(new Callback<List<PostDTO>>() {
+            @Override
+            public void onResponse(Call<List<PostDTO>> call, Response<List<PostDTO>> response) {
+                if (response.isSuccessful()) {
+                    recommandPosts = (ArrayList<PostDTO>) response.body();
+                }
+                Log.e("recommand", String.valueOf(response.code()));
+            }
+            @Override
+            public void onFailure(Call<List<PostDTO>> call, Throwable t) {
+            }
+        });
+
+        //핫플레이스
+        camplAPI.getPlaceList().enqueue(new Callback<List<PlaceDTO>>() {
+            @Override
+            public void onResponse(Call<List<PlaceDTO>> call, Response<List<PlaceDTO>> response) {
+                if (response.isSuccessful()) {
+                    hotplacePosts = (ArrayList<PlaceDTO>) response.body();
+                }
+                Log.e("place", String.valueOf(response.code()));
+            }
+
+            @Override
+            public void onFailure(Call<List<PlaceDTO>> call, Throwable t) {
+
+            }
+        });
+    }
 
     private void setCustomTabs() {
         for (int i = 0; i < tabIcon.length; i++) {

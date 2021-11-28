@@ -63,7 +63,7 @@ public interface CamplAPI {
     Call<List<PostDTO>>getMyPosts();
 
     @GET("api/v1/posts")
-    Call<List<PostDTO>>getPostList(@Query("costType") String cost, @Query("durationTimeType") String duration, @Query("pageSize") int pageSize, @Query("prevLastPostSeq") int prevLastPostSeq, @Query("timingType") String timing);
+    Call<List<PostDTO>>getPostList(@Query("costType") String cost, @Query("durationTimeType") String duration, @Query("pageSize") int pageSize, @Query("prevLastPostSeq") int prevLastPostSeq, @Query("timingType") String timing, @Query("categoryType") String[] category);
 
     @GET("api/v1/posts/{seq}")
     Call<PostDTO>getPost(@Path("seq") int seq);

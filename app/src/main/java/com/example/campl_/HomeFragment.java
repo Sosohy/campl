@@ -49,7 +49,7 @@ public class HomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        getHomePostData();
+       // getHomePostData();
         view = inflater.inflate(R.layout.fragment_home, container, false);
 
         popular_recycler = view.findViewById(R.id.popular_recyclerView);
@@ -69,6 +69,13 @@ public class HomeFragment extends Fragment {
             }
         });
 
+        Bundle bundle = this.getArguments();
+        if(bundle != null){
+            popularPosts = (ArrayList<PostDTO>) bundle.getSerializable("popular");
+            recommandPosts = (ArrayList<PostDTO>) bundle.getSerializable("recommand");
+            hotplacePosts = (ArrayList<PlaceDTO>) bundle.getSerializable("hotplace");
+        }
+
         setNotify();
 
         return view;
@@ -83,7 +90,7 @@ public class HomeFragment extends Fragment {
             public void onResponse(Call<List<PostDTO>> call, Response<List<PostDTO>> response) {
                 if (response.isSuccessful()) {
                     popularPosts = (ArrayList<PostDTO>) response.body();
-                    refresh();
+                    refreshHomeFragment();
                 }
                 Log.e("popular", String.valueOf(response.code()));
             }
@@ -99,7 +106,7 @@ public class HomeFragment extends Fragment {
             public void onResponse(Call<List<PostDTO>> call, Response<List<PostDTO>> response) {
                 if (response.isSuccessful()) {
                     recommandPosts = (ArrayList<PostDTO>) response.body();
-                    refresh();
+                    refreshHomeFragment();
                 }
                 Log.e("recommand", String.valueOf(response.code()));
             }
@@ -114,7 +121,7 @@ public class HomeFragment extends Fragment {
             public void onResponse(Call<List<PlaceDTO>> call, Response<List<PlaceDTO>> response) {
                 if (response.isSuccessful()) {
                     hotplacePosts = (ArrayList<PlaceDTO>) response.body();
-                    refresh();
+                    refreshHomeFragment();
             }
                 Log.e("place", String.valueOf(response.code()));
             }
@@ -132,7 +139,7 @@ public class HomeFragment extends Fragment {
         hotplaceAdapter.notifyDataSetChanged();
     }
 
-    public void refresh() {
+    public void refreshHomeFragment() {
 
         Fragment fr = getActivity().getSupportFragmentManager().findFragmentByTag("HomeFragment");
         FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
