@@ -102,7 +102,6 @@ public class DetailActivity extends AppCompatActivity {
         });
 
 
-        setInitContent();
         like.setOnClickListener(likeClick);
         bookmark.setOnClickListener(bookmarkClick);
 

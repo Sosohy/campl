@@ -1,9 +1,11 @@
 package com.example.campl_;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
@@ -36,20 +38,20 @@ public class HomeFragment extends Fragment {
     RecyclerHomeHotplaceAdapter hotplaceAdapter = new RecyclerHomeHotplaceAdapter(hotplacePosts);
 
     ImageButton searchBtn;
+    View view;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.fragment_home, container, false);
+        getHomePostData();
+        view = inflater.inflate(R.layout.fragment_home, container, false);
 
-        camplAPI = MainActivity.camplAPI;
         popular_recycler = view.findViewById(R.id.popular_recyclerView);
         recommand_recycler = view.findViewById(R.id.recommand_recyclerView);
         hotplace_recycler = view.findViewById(R.id.hotplace_recyclerView);
@@ -67,11 +69,7 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        popularAdapter.notifyDataSetChanged();
-        recommandAdapter.notifyDataSetChanged();
-        hotplaceAdapter.notifyDataSetChanged();
-
-        getHomePostData();
+        setNotify();
 
         return view;
     }
@@ -84,8 +82,8 @@ public class HomeFragment extends Fragment {
             @Override
             public void onResponse(Call<List<PostDTO>> call, Response<List<PostDTO>> response) {
                 if (response.isSuccessful()) {
-                    ArrayList<PostDTO> p = (ArrayList<PostDTO>) response.body();
-                    popularAdapter.notifyDataSetChanged();
+                    popularPosts = (ArrayList<PostDTO>) response.body();
+                    refresh();
                 }
                 Log.e("popular", String.valueOf(response.code()));
             }
@@ -101,7 +99,7 @@ public class HomeFragment extends Fragment {
             public void onResponse(Call<List<PostDTO>> call, Response<List<PostDTO>> response) {
                 if (response.isSuccessful()) {
                     recommandPosts = (ArrayList<PostDTO>) response.body();
-                    recommandAdapter.notifyDataSetChanged();
+                    refresh();
                 }
                 Log.e("recommand", String.valueOf(response.code()));
             }
@@ -116,7 +114,7 @@ public class HomeFragment extends Fragment {
             public void onResponse(Call<List<PlaceDTO>> call, Response<List<PlaceDTO>> response) {
                 if (response.isSuccessful()) {
                     hotplacePosts = (ArrayList<PlaceDTO>) response.body();
-                    hotplaceAdapter.notifyDataSetChanged();
+                    refresh();
             }
                 Log.e("place", String.valueOf(response.code()));
             }
@@ -126,7 +124,24 @@ public class HomeFragment extends Fragment {
 
             }
         });
-
-
     }
+
+    void setNotify(){
+        popularAdapter.notifyDataSetChanged();
+        recommandAdapter.notifyDataSetChanged();
+        hotplaceAdapter.notifyDataSetChanged();
+    }
+
+    public void refresh() {
+
+        Fragment fr = getActivity().getSupportFragmentManager().findFragmentByTag("HomeFragment");
+        FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            ft.detach(this).commitNow();
+            ft.attach(this).commitNow();
+        } else {
+            ft.detach(this).attach(this).commit();
+        }
+    }
+
 }
