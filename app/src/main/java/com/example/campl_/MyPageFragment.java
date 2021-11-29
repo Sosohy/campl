@@ -182,6 +182,7 @@ public class MyPageFragment extends Fragment {
         signIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Log.e("onClick", "click");
                 UserDTO user = new UserDTO(input_id.getText().toString(), input_pw.getText().toString());
                 camplAPI.postSignIn(user).enqueue(new Callback<ResponseBody>() {
                     @Override
@@ -194,6 +195,7 @@ public class MyPageFragment extends Fragment {
                         }
                         Log.e("login", String.valueOf(response.code()));
                     }
+
 
                     @Override
                     public void onFailure(Call<ResponseBody> call, Throwable t) {

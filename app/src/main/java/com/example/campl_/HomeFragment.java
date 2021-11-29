@@ -49,16 +49,9 @@ public class HomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        getHomePostData();
+        if(!MainActivity.load)
+            getHomePostData();
         view = inflater.inflate(R.layout.fragment_home, container, false);
-
-        popular_recycler = view.findViewById(R.id.popular_recyclerView);
-        recommand_recycler = view.findViewById(R.id.recommand_recyclerView);
-        hotplace_recycler = view.findViewById(R.id.hotplace_recyclerView);
-
-        popular_recycler.setAdapter(popularAdapter);
-        recommand_recycler.setAdapter(recommandAdapter);
-        hotplace_recycler.setAdapter(hotplaceAdapter);
 
         searchBtn = view.findViewById(R.id.home_search);
         searchBtn.setOnClickListener(new View.OnClickListener() {
@@ -69,8 +62,16 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        setNotify();
+        popular_recycler = view.findViewById(R.id.popular_recyclerView);
+        recommand_recycler = view.findViewById(R.id.recommand_recyclerView);
+        hotplace_recycler = view.findViewById(R.id.hotplace_recyclerView);
 
+        popular_recycler.setAdapter(popularAdapter);
+        recommand_recycler.setAdapter(recommandAdapter);
+        hotplace_recycler.setAdapter(hotplaceAdapter);
+
+        getHomePostData();
+        setNotify();
         return view;
     }
 
@@ -83,7 +84,6 @@ public class HomeFragment extends Fragment {
             public void onResponse(Call<List<PostDTO>> call, Response<List<PostDTO>> response) {
                 if (response.isSuccessful()) {
                     popularPosts = (ArrayList<PostDTO>) response.body();
-                    refresh();
                 }
                 Log.e("popular", String.valueOf(response.code()));
             }
@@ -99,7 +99,6 @@ public class HomeFragment extends Fragment {
             public void onResponse(Call<List<PostDTO>> call, Response<List<PostDTO>> response) {
                 if (response.isSuccessful()) {
                     recommandPosts = (ArrayList<PostDTO>) response.body();
-                    refresh();
                 }
                 Log.e("recommand", String.valueOf(response.code()));
             }
@@ -114,7 +113,6 @@ public class HomeFragment extends Fragment {
             public void onResponse(Call<List<PlaceDTO>> call, Response<List<PlaceDTO>> response) {
                 if (response.isSuccessful()) {
                     hotplacePosts = (ArrayList<PlaceDTO>) response.body();
-                    refresh();
             }
                 Log.e("place", String.valueOf(response.code()));
             }
@@ -132,7 +130,7 @@ public class HomeFragment extends Fragment {
         hotplaceAdapter.notifyDataSetChanged();
     }
 
-    public void refresh() {
+    public void refreshHomeFragment() {
 
         Fragment fr = getActivity().getSupportFragmentManager().findFragmentByTag("HomeFragment");
         FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
@@ -143,5 +141,4 @@ public class HomeFragment extends Fragment {
             ft.detach(this).attach(this).commit();
         }
     }
-
 }
