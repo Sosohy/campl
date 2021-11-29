@@ -66,8 +66,6 @@ public class SearchActivity extends AppCompatActivity {
                 if(costData.size() != 0)
                     cost = camplAPI.costQuery.get(costData.get(0));
 
-            //TODO :나중에 카테고리 추가 되면 카테고리 배열로 넣기 -> 함수도 수정
-
             ArrayList<String> cData = new ArrayList<>();
             if(categoryData.size() != 0){
                 for(int i=0; i<categoryData.size(); i++)
